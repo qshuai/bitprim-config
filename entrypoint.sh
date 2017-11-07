@@ -2,7 +2,7 @@
 #HTTP_ADDR=http://172.17.0.1
 OUTPUT_FILE=/bitprim/conf/bitprim-node.cfg
 #OUTPUT_FILE=./bitprim-node.cfg
-if [ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
+[ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
 
 
 configure_external_port()
