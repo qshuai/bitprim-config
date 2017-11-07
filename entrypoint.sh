@@ -1,21 +1,11 @@
 #!/bin/bash
-HTTP_ADDR=http://172.17.0.1
+#HTTP_ADDR=http://172.17.0.1
 OUTPUT_FILE=/bitprim/conf/bitprim-node.cfg
 #OUTPUT_FILE=./bitprim-node.cfg
+if [ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
 
-if [ -n "$CONFIG_FILE" ] ; then
-echo "Downloading $HTTP_ADDR/${CONFIG_FILE} (CONFIG_FILE variable found)"
-curl -so ${OUTPUT_FILE}  ${HTTP_ADDR}/${CONFIG_FILE}
-else
-[ ! -n "$COIN" ] && COIN=btc
-[ ! -n "$NETWORK" ] && NETWORK=mainnet
-echo "Downloading $HTTP_ADDR/bitprim-node-${COIN}-${NETWORK}.cfg"
-curl -so ${OUTPUT_FILE} ${HTTP_ADDR}/bitprim-node-${COIN}-${NETWORK}.cfg
-fi
 
-DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $OUTPUT_FILE)
-
-find_external_port()
+configure_external_port()
 {
 
 [ "$NETWORK" == "testnet" ] && PORT=18333 || PORT=8333
@@ -29,19 +19,43 @@ do
         break
     fi
 done
-}
-
-find_external_port
-
-EXTERNAL_IP=$(curl http://rancher-metadata/latest/self/host/agent_ip)
-echo $EXTERNAL_IP:$MAPPED_PORT
-
+EXTERNAL_IP=$(curl -s http://rancher-metadata/latest/self/host/agent_ip)
+echo "Configuring network.self as: ${EXTERNAL_IP}:${MAPPED_PORT}"
 sed -i "s/self =.*/self = ${EXTERNAL_IP}:${MAPPED_PORT}/g" /bitprim/conf/bitprim-node.cfg
 
+}
 
+copy_config()
+{
+echo "Cloning config repository $CONFIG_REPO"
+cd /bitprim
+git clone ${CONFIG_REPO}
+
+
+if [ -n "$CONFIG_FILE" ] ; then
+echo "Copying ${CONFIG_FILE} from repo (CONFIG_FILE variable found)"
+cp bitprim-config/$CONFIG_FILE ${OUTPUT_FILE}
+
+else
+[ ! -n "$COIN" ] && COIN=btc
+[ ! -n "$NETWORK" ] && NETWORK=mainnet
+echo "Copying bitprim-node-${COIN}-${NETWORK}.cfg from repo"
+cp bitprim-config/bitprim-node-${COIN}-${NETWORK}.cfg  ${OUTPUT_FILE}
+fi
+
+DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $OUTPUT_FILE)
+}
+
+start_bitprim()
+{
 if [ ! -d "${DB_DIR}" ] ; then echo "Initializing database directory"
 /bitprim/bin/bn -c $OUTPUT_FILE -i
 /bitprim/bin/bn -c $OUTPUT_FILE
 else
 /bitprim/bin/bn -c $OUTPUT_FILE
 fi
+}
+
+copy_config
+configure_external_port
+start_bitprim
