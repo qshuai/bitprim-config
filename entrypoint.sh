@@ -47,6 +47,7 @@ DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; 
 
 start_bitprim()
 {
+echo "Starting $(/bitprim/bin/bn --version)"
 if [ ! -d "${DB_DIR}" ] ; then echo "Initializing database directory"
 /bitprim/bin/bn -c $OUTPUT_FILE -i
 /bitprim/bin/bn -c $OUTPUT_FILE
