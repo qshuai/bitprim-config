@@ -59,7 +59,7 @@ fi
 
 configure_secret_key()
 {
-sed -i "s/server_private_key =.*/server_private_key = ${SERVER_PRIVATE_KEY}/g" $OUTPUT_FILE
+sed -i "s#server_private_key =.*#server_private_key = ${SERVER_PRIVATE_KEY}#g" $OUTPUT_FILE
 }
 
 
