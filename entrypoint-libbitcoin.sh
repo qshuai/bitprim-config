@@ -27,7 +27,7 @@ sed -i "s/self =.*/self = ${EXTERNAL_IP}:${MAPPED_PORT}/g" $OUTPUT_FILE
 copy_config()
 {
 echo "Cloning config repository $CONFIG_REPO"
-cd /bitprim ; rm -rf bitprim-config
+cd /opt/libbitcoin ; rm -rf bitprim-config
 git clone ${CONFIG_REPO}
 
 
