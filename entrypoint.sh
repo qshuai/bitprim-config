@@ -11,14 +11,16 @@ configure_external_port()
 
 for portmap in $(curl -s http://rancher-metadata/latest/self/container/ports)
 do
-    MAPPED_PORT_LINE=$(curl -s http://rancher-metadata/latest/self/container/ports/${portmap} | grep ":${PORT}")
-    if [ -n "${MAPPED_PORT_LINE}" ]
+    PORT_MAPPING=$(curl -s http://rancher-metadata/latest/self/container/ports/${portmap} | grep ":${PORT}")
+    if [ -n "${PORT_MAPPING}" ]
     then
+        MAPPED_PORT_LINE=$(echo ${PORT_MAPPING} | cut -d: -f1,2)
+        EXTERNAL_IP=$(echo ${MAPPED_PORT_LINE} | cut -d: -f1)
         MAPPED_PORT=$(echo ${MAPPED_PORT_LINE} | cut -d: -f2)
         break
     fi
 done
-EXTERNAL_IP=$(curl -s http://rancher-metadata/latest/self/host/agent_ip)
+[ "${EXTERNAL_IP}" == "0.0.0.0" ] && EXTERNAL_IP=$(curl -s http://rancher-metadata/latest/self/host/agent_ip)
 echo "Configuring network.self as: ${EXTERNAL_IP}:${MAPPED_PORT}"
 sed -i "s/self =.*/self = ${EXTERNAL_IP}:${MAPPED_PORT}/g" /bitprim/conf/bitprim-node.cfg
 
