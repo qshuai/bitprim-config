@@ -64,6 +64,7 @@ trap _term SIGTERM
 echo "Starting $(/bitprim/bin/bn --version)"
 /bitprim/bin/bn -c $OUTPUT_FILE &
 child=$!
+wait $child
 }
 
 copy_config
