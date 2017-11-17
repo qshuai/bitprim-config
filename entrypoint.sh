@@ -50,7 +50,8 @@ DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; 
 
 _term() {
   echo "Caught SIGTERM signal!"
-  kill -TERM "$child" 2>/dev/null
+  echo Waiting for $child
+  kill -TERM "$child" ; wait $child 2>/dev/null
 }
 
 start_bitprim()
@@ -63,8 +64,6 @@ trap _term SIGTERM
 echo "Starting $(/bitprim/bin/bn --version)"
 /bitprim/bin/bn -c $OUTPUT_FILE &
 child=$!
-echo Waiting for $child
-wait "$child"
 }
 
 copy_config
