@@ -47,15 +47,24 @@ fi
 DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $OUTPUT_FILE)
 }
 
+
+_term() {
+  echo "Caught SIGTERM signal!"
+  kill -TERM "$child" 2>/dev/null
+}
+
 start_bitprim()
 {
-echo "Starting $(/bitprim/bin/bn --version)"
+
 if [ ! -d "${DB_DIR}" ] ; then echo "Initializing database directory"
 /bitprim/bin/bn -c $OUTPUT_FILE -i
-/bitprim/bin/bn -c $OUTPUT_FILE
-else
-/bitprim/bin/bn -c $OUTPUT_FILE
 fi
+trap _term SIGTERM
+echo "Starting $(/bitprim/bin/bn --version)"
+/bitprim/bin/bn -c $OUTPUT_FILE &
+child=$!
+echo Waiting for $child
+wait "$child"
 }
 
 copy_config
