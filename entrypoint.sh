@@ -26,6 +26,17 @@ sed -i "s/self =.*/self = ${EXTERNAL_IP}:${MAPPED_PORT}/g" /bitprim/conf/bitprim
 
 }
 
+install_additional_packages()
+{
+if [ ! -e /tmp/already_installed ] ; then
+    apt-get update
+    apt-get -y install $ADDITIONAL_PACKAGES
+    if [ $? == 0 ] ; then
+	echo "$ADDITIONAL_PACKAGES installed" >/tmp/already_installed
+    fi
+fi
+}
+
 copy_config()
 {
 echo "Cloning config repository $CONFIG_REPO"
@@ -69,4 +80,5 @@ wait $child
 
 copy_config
 configure_external_port
+[ -n "$ADDITIONAL_PACKAGES" ] && install_additional_packages
 start_bitprim
