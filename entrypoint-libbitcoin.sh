@@ -48,15 +48,26 @@ fi
 DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $OUTPUT_FILE)
 }
 
+_term() {
+  echo "Caught SIGTERM signal!"
+  echo Waiting for $child
+  kill -TERM "$child" ; wait $child 2>/dev/null
+}
+
+
+
 start_libbitcoin()
 {
 echo "Starting $(/opt/libbitcoin/bin/bs --version)"
 if [ ! -d "${DB_DIR}" ] ; then echo "Initializing database directory"
 /opt/libbitcoin/bin/bs -c $OUTPUT_FILE -i
-/opt/libbitcoin/bin/bs -c $OUTPUT_FILE
-else
-/opt/libbitcoin/bin/bs -c $OUTPUT_FILE
 fi
+trap _term SIGTERM
+/opt/libbitcoin/bin/bs -c $OUTPUT_FILE
+child=$!
+wait $child
+
+
 }
 
 
