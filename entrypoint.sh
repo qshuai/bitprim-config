@@ -90,8 +90,10 @@ child=$!
 wait $child
 }
 
+### WORK Starts Here
+
 copy_config
-[ -n "CLEAN_DB_DIRECTORY" ] && clean_db_directory
+[ -n "$CLEAN_DB_DIRECTORY" ] && clean_db_directory
 configure_external_port
 [ -n "$ADDITIONAL_PACKAGES" ] && install_additional_packages
 start_bitprim
