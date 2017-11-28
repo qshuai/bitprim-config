@@ -60,10 +60,12 @@ DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; 
 
 clean_db_directory()
 {
-if [ ! -e /tmp/cleaned_db_directory ] ; then
-echo "Cleaning up database directory"
-rm -rf $DB_DIR/* && rmdir $DB_DIR
-[ $? -eq 0 ] && touch /tmp/cleaned_db_directory
+if [ -d "${DB_DIR}" ] ; then
+  if [ ! -e /tmp/cleaned_db_directory ] ; then
+  echo "Cleaning up database directory"
+  rm -rf $DB_DIR/* && rmdir $DB_DIR
+  [ $? -eq 0 ] && touch /tmp/cleaned_db_directory
+  fi
 fi
 
 
