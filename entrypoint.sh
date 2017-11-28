@@ -58,6 +58,16 @@ fi
 DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $OUTPUT_FILE)
 }
 
+clean_db_directory()
+{
+if [ ! -e /tmp/cleaned_db_directory ] ; then
+echo "Cleaning up database directory"
+rm -rf $DB_DIR/* && rmdir $DB_DIR
+[ $? -eq 0 ] && touch /tmp/cleaned_db_directory
+fi
+
+
+}
 
 _term() {
   echo "Caught SIGTERM signal!"
@@ -79,6 +89,7 @@ wait $child
 }
 
 copy_config
+[ -n "CLEAN_DB_DIRECTORY" ] && clean_db_directory
 configure_external_port
 [ -n "$ADDITIONAL_PACKAGES" ] && install_additional_packages
 start_bitprim
