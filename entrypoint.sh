@@ -79,7 +79,6 @@ _term() {
 
 start_bitprim()
 {
-
 if [ ! -d "${DB_DIR}" ] ; then echo "Initializing database directory"
 /bitprim/bin/bn -c $OUTPUT_FILE -i
 fi
