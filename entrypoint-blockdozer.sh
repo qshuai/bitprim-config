@@ -47,26 +47,24 @@ EOF
 
 configure_node()
 {
-if [ ! -e "/root/.bitcoin/node_created" ] ; then
+if [ ! -e "/tmp/node_created" ] ; then
+
 cd /root/.bitcoin
-bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui && touch /root/.bitcoin/node_created
 
-BITCOIND_BINARY=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.exec' -r)
-BITCOIND_DATADIR=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.datadir' -r)
+    if [ ! -d "${NODE_NAME}" ] ; then
+	bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui && touch /tmp/node_created
+	BITCOIND_BINARY=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.exec' -r)
+	BITCOIND_DATADIR=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.datadir' -r)
+        if [ "${COIN}" == "bcc" ] ; then
+	    BITCOIND_BINARY="/usr/bin/bitcoind"
+	    BITCOIND_DATADIR="/root/.bitcoin"
+	    configure_bitcoinabc
+	fi #[ "${COIN}" == "bcc" ]
 
-if [ "${COIN}" == "bcc" ] ; then
-BITCOIND_BINARY="/usr/bin/bitcoind"
-BITCOIND_DATADIR="/root/.bitcoin"
-configure_bitcoinabc
-fi
-
-cd /root/blockdozer-insight
-cp -R * /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui
-
-
-cd /root/.bitcoin/${NODE_NAME}
-
-cat <<EOF >bitcore-node.json
+    cd /root/blockdozer-insight
+    cp -R * /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui
+    cd /root/.bitcoin/${NODE_NAME}
+    cat <<EOF >bitcore-node.json
 {
   "network": "${BITCORE_NETWORK}",
   "port": 3001,
@@ -89,7 +87,8 @@ cat <<EOF >bitcore-node.json
   }
 }
 EOF
-fi
+    fi #[ ! -d "${NODE_NAME}" ]
+fi #[ ! -e "/tmp/node_created" ]
 }
 
 
