@@ -51,10 +51,12 @@ configure_node()
 
 if [ ! -e "/tmp/node_created" ] ; then
 
-
+cd /root/blockdozer-insight
+cp -R * /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui
 cd /root/.bitcoin
 
     if [ ! -d "${NODE_NAME}" ] ; then
+	cd /root/.bitcoin
 	bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui && touch /tmp/node_created
 	BITCOIND_BINARY=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.exec' -r)
 	BITCOIND_DATADIR=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.datadir' -r)
@@ -62,8 +64,6 @@ cd /root/.bitcoin
 	    BITCOIND_BINARY="/usr/bin/bitcoind"
 	    BITCOIND_DATADIR="/root/.bitcoin"
 	fi #[ "${COIN}" == "bcc" ]
-    cd /root/blockdozer-insight
-    cp -R * /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui
     cd /root/.bitcoin/${NODE_NAME}
     cat <<EOF >bitcore-node.json
 {
