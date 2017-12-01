@@ -47,7 +47,10 @@ EOF
 
 configure_node()
 {
+[ ! -e "/usr/bin/bitcoind" ] && configure_bitcoinabc
+
 if [ ! -e "/tmp/node_created" ] ; then
+
 
 cd /root/.bitcoin
 
@@ -58,9 +61,7 @@ cd /root/.bitcoin
         if [ "${COIN}" == "bcc" ] ; then
 	    BITCOIND_BINARY="/usr/bin/bitcoind"
 	    BITCOIND_DATADIR="/root/.bitcoin"
-	    configure_bitcoinabc
 	fi #[ "${COIN}" == "bcc" ]
-
     cd /root/blockdozer-insight
     cp -R * /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui
     cd /root/.bitcoin/${NODE_NAME}
