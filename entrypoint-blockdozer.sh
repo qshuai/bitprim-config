@@ -60,7 +60,7 @@ configure_bitcoinabc
 fi
 
 cd /root/blockdozer-insight
-cp -R * /root/.bitcoin/bitcore-${NODE_NAME}/node_modules/insight-ui
+cp -R * /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui
 
 
 cd /root/.bitcoin/${NODE_NAME}
