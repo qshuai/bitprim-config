@@ -43,6 +43,12 @@ EOF
 
 }
 
+configure_domain()
+{
+if [ -n "$DOMAIN_NAME" ] ; then
+sed -i "s/blockdozer.com/$DOMAIN_NAME/g" /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui/public/views/includes/links.html
+fi
+}
 
 
 configure_node()
@@ -112,4 +118,5 @@ wait $child
 ### WORK Starts Here
 
 configure_node
+configure_domain
 start_bitcore
