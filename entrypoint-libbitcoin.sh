@@ -63,7 +63,7 @@ if [ ! -d "${DB_DIR}" ] ; then echo "Initializing database directory"
 /opt/libbitcoin/bin/bs -c $OUTPUT_FILE -i
 fi
 trap _term SIGTERM
-/opt/libbitcoin/bin/bs -c $OUTPUT_FILE
+/opt/libbitcoin/bin/bs -c $OUTPUT_FILE &
 child=$!
 wait $child
 
