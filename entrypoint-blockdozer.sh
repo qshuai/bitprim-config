@@ -58,9 +58,6 @@ configure_node()
 
 if [ ! -e "/tmp/node_created" ] ; then
 
-cd /root/blockdozer-insight
-cp -R * /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui
-cd /root/.bitcoin
 
     if [ ! -d "${NODE_NAME}" ] ; then
 	cd /root/.bitcoin
@@ -96,6 +93,11 @@ cd /root/.bitcoin
 }
 EOF
     fi #[ ! -d "${NODE_NAME}" ]
+
+cd /root/blockdozer-insight
+cp -R * /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui
+cd /root/.bitcoin
+
 fi #[ ! -e "/tmp/node_created" ]
 }
 
