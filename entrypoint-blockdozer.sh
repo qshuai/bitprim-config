@@ -16,7 +16,8 @@ fi
 configure_bitcoinabc()
 {
 add-apt-repository ppa:bitcoin-abc/ppa && apt-get update && apt-get -y install bitcoind 
-
+mv /usr/bin/bitcoind /usr/bin/bitcoind.old 
+mv /usr/bin/bitcoind.new /usr/bin/bitcoind
 cat <<EOF >/root/.bitcoin/bitcoin.conf
 debug=1
 testnet=${IS_TESTNET}
