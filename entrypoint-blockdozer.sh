@@ -15,6 +15,7 @@ fi
 
 configure_bitcoinabc()
 {
+echo Configuring BitcoinABC
 add-apt-repository ppa:bitcoin-abc/ppa && apt-get update && apt-get -y install bitcoind 
 mv /usr/bin/bitcoind /usr/bin/bitcoind.old 
 mv /usr/bin/bitcoind.new /usr/bin/bitcoind
@@ -47,6 +48,7 @@ EOF
 configure_domain()
 {
 if [ -n "$DOMAIN_NAME" ] ; then
+echo "Configuring ${DOMAIN_NAME} in links.html" 
 sed -i "s/blockdozer.com/$DOMAIN_NAME/g" /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui/public/views/includes/links.html
 fi
 }
@@ -58,8 +60,8 @@ configure_node()
 
 if [ ! -e "/tmp/node_created" ] ; then
 
-
     if [ ! -d "${NODE_NAME}" ] ; then
+	echo "Creating Node ${NODE_NAME}"
 	cd /root/.bitcoin
 	bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui && touch /tmp/node_created
 	BITCOIND_BINARY=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.exec' -r)
@@ -69,6 +71,7 @@ if [ ! -e "/tmp/node_created" ] ; then
 	    BITCOIND_DATADIR="/root/.bitcoin"
 	fi #[ "${COIN}" == "bcc" ]
     cd /root/.bitcoin/${NODE_NAME}
+    echo "Creating bitcore-node.json"
     cat <<EOF >bitcore-node.json
 {
   "network": "${BITCORE_NETWORK}",
