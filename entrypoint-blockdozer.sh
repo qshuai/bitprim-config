@@ -7,6 +7,12 @@ NODE_NAME="bitcore-${COIN}-${NETWORK}"
 IS_TESTNET=0
 BITCORE_NETWORK=livenet
 
+if [ -e /root/.bitcoin/node_created && -n "$RECONFIGURE_BITCORE" ] ; then
+rm /root/.bitcoin/node_created
+mv /root/.bitcoin/${NODE_NAME} /root/.bitcoin/${NODE_NAME}.old
+fi
+
+
 if [ "$NETWORK" == "testnet" ] ; then
 IS_TESTNET=1
 BITCORE_NETWORK=testnet
@@ -58,12 +64,12 @@ configure_node()
 {
 [ ! -e "/usr/bin/bitcoind" ] && configure_bitcoinabc
 
-if [ ! -e "/tmp/node_created" ] ; then
+if [ ! -e "/root/.bitcoin/node_created" ] ; then
 
     if [ ! -d "${NODE_NAME}" ] ; then
 	echo "Creating Node ${NODE_NAME}"
 	cd /root/.bitcoin
-	bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui && touch /tmp/node_created
+	bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui && touch /root/.bitcoin/node_created
 	BITCOIND_BINARY=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.exec' -r)
 	BITCOIND_DATADIR=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.datadir' -r)
         if [ "${COIN}" == "bcc" ] ; then
@@ -101,7 +107,15 @@ cd /root/blockdozer-insight
 cp -R * /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui
 cd /root/.bitcoin
 
-fi #[ ! -e "/tmp/node_created" ]
+
+if [ -n ${RECONFIGURE_BITCORE} && -d /root/.bitcoin/${NODE_NAME}.old ] ; then
+echo Copying old data directory
+cd /root/.bitcoin/${NODE_NAME} && rm -rf data
+mv /root/.bitcoin/${NODE_NAME}.old/data .
+rm -rf /root/.bitcoin/${NODE_NAME}.old
+fi
+
+fi #[ ! -e "/root/.bitcoin/node_created" ]
 }
 
 
