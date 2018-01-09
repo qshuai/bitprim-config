@@ -7,7 +7,8 @@ NODE_NAME="bitcore-${COIN}-${NETWORK}"
 IS_TESTNET=0
 BITCORE_NETWORK=livenet
 
-if [[ -n "$RECONFIGURE_BITCORE" ]] ; then
+if [[ -e /root/.bitcoin/node_created && -n "$RECONFIGURE_BITCORE" ]] ; then
+echo "RECONFIGURE_BITCORE set, deleting node_created and bitcoin data directory"
 rm /root/.bitcoin/node_created
 mv /root/.bitcoin/${NODE_NAME} /root/.bitcoin/${NODE_NAME}.old
 fi
