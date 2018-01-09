@@ -7,7 +7,7 @@ NODE_NAME="bitcore-${COIN}-${NETWORK}"
 IS_TESTNET=0
 BITCORE_NETWORK=livenet
 
-if [ -e /root/.bitcoin/node_created && -n "$RECONFIGURE_BITCORE" ] ; then
+if [[ -e /root/.bitcoin/node_created && -n "$RECONFIGURE_BITCORE" ]] ; then
 rm /root/.bitcoin/node_created
 mv /root/.bitcoin/${NODE_NAME} /root/.bitcoin/${NODE_NAME}.old
 fi
@@ -115,7 +115,7 @@ cd /root/.bitcoin
 
 
 
-if [ -n ${RECONFIGURE_BITCORE} && -d /root/.bitcoin/${NODE_NAME}.old ] ; then
+if [[ -n ${RECONFIGURE_BITCORE}  &&  -d /root/.bitcoin/${NODE_NAME}.old ]] ; then
 echo Copying old data directory
 cd /root/.bitcoin/${NODE_NAME} && rm -rf data
 mv /root/.bitcoin/${NODE_NAME}.old/data .
