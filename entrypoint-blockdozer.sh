@@ -105,7 +105,7 @@ EOF
     fi #[ ! -d "${NODE_NAME}" ]
 
 cd /root/blockdozer-insight
-cp -R * /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui
+cp -R * /root/.bitcoin/${NODE_NAME}/node_modules
 
 if [ "$COIN" == "bcc" ] ; then
 cd /root/bitcore_patches
