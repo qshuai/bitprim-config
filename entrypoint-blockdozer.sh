@@ -41,6 +41,7 @@ rpcallowip=127.0.0.1
 rpcuser=bitcoin
 rpcpassword=local321
 uacomment=bitcore
+usecashaddr=0
 # testnet=1
 # connect=104.198.194.166
 # uahfstarttime=1500500000
@@ -105,7 +106,13 @@ EOF
 
 cd /root/blockdozer-insight
 cp -R * /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui
+
+if [ "$COIN" == "bcc" ] ; then
+cd /root/bitcore_patches
+cp -r * /root/.bitcoin/${NODE_NAME}
+fi
 cd /root/.bitcoin
+
 
 
 if [ -n ${RECONFIGURE_BITCORE} && -d /root/.bitcoin/${NODE_NAME}.old ] ; then
