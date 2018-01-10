@@ -69,7 +69,7 @@ configure_node()
 [ ! -e "/usr/bin/bitcoind" ] && configure_bitcoinabc
 	echo "Creating Node ${NODE_NAME}"
 	cd /root/.bitcoin
-	bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui && touch /root/.bitcoin/node_created
+	bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui 
 	BITCOIND_BINARY=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.exec' -r)
 	BITCOIND_DATADIR=/root/.bitcoin/blockchain
         if [ "${COIN}" == "bcc" ] ; then
