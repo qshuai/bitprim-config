@@ -110,7 +110,7 @@ tar xpvzf insight-ui-${COIN}.tar.gz -C /root/.bitcoin/${NODE_NAME}/node_modules
 
 
 
-
+if [ "${COIN}" == "bcc" ] ; then
 echo "Applying patches to bitcore"
 cd /root/bitprim-config/blockdozer/patches
 cp -r * /root/.bitcoin/${NODE_NAME}
