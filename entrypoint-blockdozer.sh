@@ -103,6 +103,7 @@ EOF
 echo "Copying UI files"
 cd /root/
 echo "Cloning ${CONFIG_REPO}"
+rm -rf bitprim-config 
 git clone https://github.com/bitprim/bitprim-config.git
 cd bitprim-config/blockdozer
 tar xpvzf insight-ui.tar.gz -C /root/.bitcoin/${NODE_NAME}/node_modules
