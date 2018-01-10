@@ -16,7 +16,7 @@ fi
 
 if [ -d /root/.bitcoin/${NODE_NAME} ] ; then
 echo "Cleaning old bitcore node"
-mv /root/.bitcoin/${NODE_NAME} /root/.bitcoin/${NODE_NAME}.old
+rm -rf /root/.bitcoin/${NODE_NAME}
 fi
 
 
@@ -106,9 +106,11 @@ echo "Cloning ${CONFIG_REPO}"
 rm -rf bitprim-config 
 git clone https://github.com/bitprim/bitprim-config.git
 cd bitprim-config/blockdozer
-tar xpvzf insight-ui.tar.gz -C /root/.bitcoin/${NODE_NAME}/node_modules
+tar xpvzf insight-ui-${COIN}.tar.gz -C /root/.bitcoin/${NODE_NAME}/node_modules
 
-if [ "$COIN" == "bcc" ] ; then
+
+
+
 echo "Applying patches to bitcore"
 cd /root/bitprim-config/blockdozer/patches
 cp -r * /root/.bitcoin/${NODE_NAME}
