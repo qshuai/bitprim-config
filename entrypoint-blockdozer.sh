@@ -7,17 +7,18 @@ NODE_NAME="bitcore-${COIN}-${NETWORK}"
 IS_TESTNET=0
 BITCORE_NETWORK=livenet
 
-if [[ -e /root/.bitcoin/node_created && -n "$RECONFIGURE_BITCORE" ]] ; then
-echo "RECONFIGURE_BITCORE set, deleting node_created and bitcoin data directory"
-rm /root/.bitcoin/node_created
-mv /root/.bitcoin/${NODE_NAME} /root/.bitcoin/${NODE_NAME}.old
-fi
-
 
 if [ "$NETWORK" == "testnet" ] ; then
 IS_TESTNET=1
 BITCORE_NETWORK=testnet
 fi
+
+
+if [ -d /root/.bitcoin/${NODE_NAME} ] ; then
+echo "Cleaning old bitcore node"
+mv /root/.bitcoin/${NODE_NAME} /root/.bitcoin/${NODE_NAME}.old
+fi
+
 
 
 configure_bitcoinabc()
@@ -29,6 +30,7 @@ mv /usr/bin/bitcoind.new /usr/bin/bitcoind
 cat <<EOF >/root/.bitcoin/bitcoin.conf
 debug=1
 testnet=${IS_TESTNET}
+datadir=/root/.bitcoin/blockchain
 server=1
 whitelist=127.0.0.1
 # reindex=1
@@ -65,18 +67,13 @@ fi
 configure_node()
 {
 [ ! -e "/usr/bin/bitcoind" ] && configure_bitcoinabc
-
-if [ ! -e "/root/.bitcoin/node_created" ] ; then
-
-    if [ ! -d "${NODE_NAME}" ] ; then
 	echo "Creating Node ${NODE_NAME}"
 	cd /root/.bitcoin
 	bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui && touch /root/.bitcoin/node_created
 	BITCOIND_BINARY=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.exec' -r)
-	BITCOIND_DATADIR=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.datadir' -r)
+	BITCOIND_DATADIR=/root/.bitcoin/blockchain
         if [ "${COIN}" == "bcc" ] ; then
 	    BITCOIND_BINARY="/usr/bin/bitcoind"
-	    BITCOIND_DATADIR="/root/.bitcoin"
 	fi #[ "${COIN}" == "bcc" ]
     cd /root/.bitcoin/${NODE_NAME}
     echo "Creating bitcore-node.json"
@@ -103,27 +100,21 @@ if [ ! -e "/root/.bitcoin/node_created" ] ; then
   }
 }
 EOF
-    fi #[ ! -d "${NODE_NAME}" ]
-
-cd /root/blockdozer-insight
-cp -R * /root/.bitcoin/${NODE_NAME}/node_modules
+echo "Copying UI files"
+cd /root/
+echo "Cloning ${CONFIG_REPO}"
+git clone https://github.com/bitprim/bitprim-config.git
+cd bitprim-config/blockdozer
+tar xpvzf insight-ui.tar.gz -C /root/.bitcoin/${NODE_NAME}/node_modules
 
 if [ "$COIN" == "bcc" ] ; then
-cd /root/bitcore_patches
+echo "Applying patches to bitcore"
+cd /root/bitprim-config/blockdozer/patches
 cp -r * /root/.bitcoin/${NODE_NAME}
 fi
+
 cd /root/.bitcoin
 
-
-
-if [[ -n ${RECONFIGURE_BITCORE}  &&  -d /root/.bitcoin/${NODE_NAME}.old ]] ; then
-echo Copying old data directory
-cd /root/.bitcoin/${NODE_NAME} && rm -rf data
-mv /root/.bitcoin/${NODE_NAME}.old/data .
-rm -rf /root/.bitcoin/${NODE_NAME}.old
-fi
-
-fi #[ ! -e "/root/.bitcoin/node_created" ]
 }
 
 
