@@ -23,11 +23,14 @@ fi
 
 configure_bitcoinabc()
 {
+if [ ! -e "/usr/bin/bitcoind" ] ; then
 echo Configuring BitcoinABC
-add-apt-repository ppa:bitcoin-abc/ppa && apt-get update && apt-get -y install bitcoind 
-mv /usr/bin/bitcoind /usr/bin/bitcoind.old 
+add-apt-repository ppa:bitcoin-abc/ppa && apt-get update && apt-get -y install bitcoind
+mv /usr/bin/bitcoind /usr/bin/bitcoind.old
 mv /usr/bin/bitcoind.new /usr/bin/bitcoind
-cat <<EOF >/root/.bitcoin/bitcoin.conf
+fi
+echo "Creating bitcoind config file"
+cat <<EOF >/root/.bitcoin/blockchain/bitcoin.conf
 debug=1
 testnet=${IS_TESTNET}
 datadir=/root/.bitcoin/blockchain
@@ -41,6 +44,7 @@ spentindex=1
 zmqpubrawtx=tcp://127.0.0.1:28332
 zmqpubhashblock=tcp://127.0.0.1:28332
 rpcallowip=127.0.0.1
+rcpalowip=10.42.0.0/16
 rpcuser=bitcoin
 rpcpassword=local321
 uacomment=bitcore
@@ -58,7 +62,7 @@ EOF
 configure_domain()
 {
 if [ -n "$DOMAIN_NAME" ] ; then
-echo "Configuring ${DOMAIN_NAME} in links.html" 
+echo "Configuring ${DOMAIN_NAME} in links.html"
 sed -i "s/blockdozer.com/$DOMAIN_NAME/g" /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui/public/views/includes/links.html
 fi
 }
@@ -66,15 +70,14 @@ fi
 
 configure_node()
 {
-[ ! -e "/usr/bin/bitcoind" ] && configure_bitcoinabc
-	echo "Creating Node ${NODE_NAME}"
-	cd /root/.bitcoin
-	bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui 
-	BITCOIND_BINARY=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.exec' -r)
-	BITCOIND_DATADIR=/root/.bitcoin/blockchain
+        echo "Creating Node ${NODE_NAME}"
+        cd /root/.bitcoin
+        bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui
+        BITCOIND_BINARY=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.exec' -r)
+        BITCOIND_DATADIR=/root/.bitcoin/blockchain
         if [ "${COIN}" == "bcc" ] ; then
-	    BITCOIND_BINARY="/usr/bin/bitcoind"
-	fi #[ "${COIN}" == "bcc" ]
+            BITCOIND_BINARY="/usr/bin/bitcoind"
+        fi #[ "${COIN}" == "bcc" ]
     cd /root/.bitcoin/${NODE_NAME}
     echo "Creating bitcore-node.json"
     cat <<EOF >bitcore-node.json
@@ -100,10 +103,12 @@ configure_node()
   }
 }
 EOF
+[ "${COIN}" == "bcc" ] && configure_bitcoinabc
+
 echo "Copying UI files"
 cd /root/
 echo "Cloning ${CONFIG_REPO}"
-rm -rf bitprim-config 
+rm -rf bitprim-config
 git clone https://github.com/bitprim/bitprim-config.git
 cd bitprim-config/blockdozer
 tar xpvzf insight-ui-${COIN}.tar.gz -C /root/.bitcoin/${NODE_NAME}/node_modules
@@ -114,6 +119,7 @@ if [ "${COIN}" == "bcc" ] ; then
 echo "Applying patches to bitcore"
 cd /root/bitprim-config/blockdozer/patches
 cp -r * /root/.bitcoin/${NODE_NAME}
+cp ../bitcoind /usr/bin/bitcoind
 fi
 
 cd /root/.bitcoin
