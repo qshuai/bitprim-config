@@ -80,7 +80,9 @@ configure_node()
             BITCOIND_BINARY="/usr/bin/bitcoind"
         fi #[ "${COIN}" == "bcc" ]
     cd /root/.bitcoin/${NODE_NAME}
-    echo "Creating bitcore-node.json"
+    if [ "${STANDALONE}" == "true" ] ; then
+    echo "Creting bitcore-node.json for standalone bitcore node"
+    REMOTE_BITCOIND="blockdozer-bitcore-${COIN}-${NETWORK}-node.blockdozer-${COIN}-${NETWORK}" 
     cat <<EOF >bitcore-node.json
 {
   "network": "${BITCORE_NETWORK}",
@@ -93,9 +95,41 @@ configure_node()
   ],
   "servicesConfig": {
     "bitcoind": {
+      "connect": [{
+        "rpcuser": "bitcoin",
+        "rpcpassword": "local321",
+        "rpchost": "${REMOTE_BITCOIND}",
+        "zmqpubrawtx" : "tcp://${REMOTE_BITCOIND}:28332",
+        "zmqpubhashblock": "tcp://${REMOTE_BITCOIND}:28332"
+      }]
+    },
+    "insight-api": {
+      "disableRateLimiter": true
+    }
+  }
+}
+EOF
+  else
+    echo "Creating bitcore-node.json for full bitcore node"
+    cat <<EOF >bitcore-node.json
+{
+  "network": "${BITCORE_NETWORK}",
+  "port": 3001,
+  "services": [
+    "bitcoind",
+    "insight-api",
+    "insight-ui",
+    "web"
+  ],
+  "servicesConfig": {
+    "bitcoind": {
+
       "spawn": {
         "datadir": "${BITCOIND_DATADIR}",
-        "exec": "${BITCOIND_BINARY}"
+        "exec": "${BITCOIND_BINARY}",
+        "zmqpubrawtx": "tcp://127,0.0.1:28332",
+        "zmqpubhashblock": "tcp://127.0.0.1:28332"
+
       }
     },
     "insight-api": {
@@ -104,7 +138,9 @@ configure_node()
   }
 }
 EOF
+
 [ "${COIN}" == "bcc" ] && configure_bitcoinabc
+fi #IF STANDALONE
 
 echo "Copying UI files"
 cd /root/
