@@ -26,6 +26,7 @@ add-apt-repository ppa:bitcoin-abc/ppa && apt-get update && apt-get -y install b
 mv /usr/bin/bitcoind /usr/bin/bitcoind.old
 mv /usr/bin/bitcoind.new /usr/bin/bitcoind
 fi
+
 echo "Creating bitcoind config file"
 [ ! -d  /root/.bitcoin/blockchain ] && mkdir /root/.bitcoin/blockchain
 cat <<EOF >/root/.bitcoin/blockchain/bitcoin.conf
@@ -42,7 +43,7 @@ spentindex=1
 zmqpubrawtx=tcp://0.0.0.0:28332
 zmqpubhashblock=tcp://0.0.0.0:28332
 rpcallowip=127.0.0.1
-rcpalowip=10.42.0.0/16
+rcpallowip=10.42.0.0/16
 rpcuser=bitcoin
 rpcpassword=local321
 uacomment=bitcore
