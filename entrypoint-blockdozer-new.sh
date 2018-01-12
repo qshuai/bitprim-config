@@ -39,8 +39,8 @@ txindex=1
 addressindex=1
 timestampindex=1
 spentindex=1
-zmqpubrawtx=tcp://*:28332
-zmqpubhashblock=tcp://*:28332
+zmqpubrawtx=tcp://0.0.0.0:28332
+zmqpubhashblock=tcp://0.0.0.0:28332
 rpcallowip=127.0.0.1
 rcpalowip=10.42.0.0/16
 rpcuser=bitcoin
@@ -123,10 +123,7 @@ EOF
 
       "spawn": {
         "datadir": "${BITCOIND_DATADIR}",
-        "exec": "${BITCOIND_BINARY}",
-        "zmqpubrawtx": "tcp://127.0.0.1:28332",
-        "zmqpubhashblock": "tcp://127.0.0.1:28332"
-
+        "exec": "${BITCOIND_BINARY}"
       }
     },
     "insight-api": {
