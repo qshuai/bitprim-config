@@ -127,7 +127,7 @@ EOF
       "spawn": {
         "datadir": "${BITCOIND_DATADIR}",
         "exec": "${BITCOIND_BINARY}",
-        "zmqpubrawtx": "tcp://127,0.0.1:28332",
+        "zmqpubrawtx": "tcp://127.0.0.1:28332",
         "zmqpubhashblock": "tcp://127.0.0.1:28332"
 
       }
