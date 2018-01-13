@@ -42,6 +42,7 @@ timestampindex=1
 spentindex=1
 zmqpubrawtx=tcp://0.0.0.0:28332
 zmqpubhashblock=tcp://0.0.0.0:28332
+minrelaytxfee=0.0005
 rpcallowip=127.0.0.1
 rpcallowip=10.42.0.0/16
 rpcuser=bitcoin
@@ -80,7 +81,7 @@ configure_node()
     cd /root/.bitcoin/${NODE_NAME}
     if [ "${STANDALONE}" == "true" ] ; then
     echo "Creting bitcore-node.json for standalone bitcore node"
-    REMOTE_BITCOIND="blockdozer-bitcore-${COIN}-${NETWORK}-node.blockdozer-${COIN}-${NETWORK}" 
+    REMOTE_BITCOIND="bdz-load-balancer.blockdozer" 
     cat <<EOF >bitcore-node.json
 {
   "network": "${BITCORE_NETWORK}",
