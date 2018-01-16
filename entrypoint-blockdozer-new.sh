@@ -175,7 +175,7 @@ start_bitcore()
 trap _term SIGTERM
 echo "Starting Bitcore"
 cd /root/.bitcoin/${NODE_NAME}
-bitcore start &
+node --max-old-space-size=8192 bitcore start &
 child=$!
 wait $child
 }
