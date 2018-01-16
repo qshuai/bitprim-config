@@ -175,8 +175,8 @@ start_bitcore()
 trap _term SIGTERM
 echo "Starting Bitcore"
 cd /root/.bitcoin/${NODE_NAME}
-#node --max-old-space-size=${NODE_MEMORY_LIMIT} bitcore start >/dev/console &
-bitcore start >/dev/console &
+node --max-old-space-size=${NODE_MEMORY_LIMIT} /usr/bin/bitcore start >/dev/console &
+#bitcore start >/dev/console &
 child=$!
 wait $child
 }
