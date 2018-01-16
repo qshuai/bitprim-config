@@ -1,6 +1,6 @@
 #!/bin/bash
 OUTPUT_FILE=/bitprim/conf/bitprim-node.cfg
-
+NODE_MEMORY_LIMIT=8192
 NODE_NAME="bitcore-${COIN}-${NETWORK}"
 IS_TESTNET=0
 BITCORE_NETWORK=livenet
@@ -175,7 +175,7 @@ start_bitcore()
 trap _term SIGTERM
 echo "Starting Bitcore"
 cd /root/.bitcoin/${NODE_NAME}
-node --max-old-space-size=8192 bitcore start &
+node --max-old-space-size=${NODE_MEMORY_LIMIT} bitcore start &
 child=$!
 wait $child
 }
