@@ -111,7 +111,8 @@ configure_node()
       }]
     },
     "insight-api": {
-      "disableRateLimiter": true
+      "disableRateLimiter": true,
+      "enableCache": true
     }
   }
 }
@@ -137,7 +138,8 @@ EOF
       }
     },
     "insight-api": {
-      "disableRateLimiter": true
+      "disableRateLimiter": true,
+      "enableCache": true
     }
   }
 }
