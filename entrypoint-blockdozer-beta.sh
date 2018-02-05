@@ -8,7 +8,7 @@ mkdir -p /root/.ssh
 echo "${SSH_KEY}" >.ssh/id_rsa
 chmod 600 .ssh/id_rsa
 rm -rf bitprim-config
-cat >/root/.ssh/ssh_config <EOF
+cat <<EOF >/root/.ssh/ssh_config 
 Host *
 StrictHostKeyChecking no 
 EOF
