@@ -8,6 +8,11 @@ mkdir -p /root/.ssh
 echo "${SSH_KEY}" >.ssh/id_rsa
 chmod 600 .ssh/id_rsa
 rm -rf bitprim-config
+cat >/root/.ssh/ssh_config <EOF
+Host *
+StrictHostKeyChecking no 
+EOF
+
 git clone ${CONFIG_REPO} bitprim-config
 echo "Running entrypoint script ${ENTRYPOINT_SCRIPT}"
 . /root/bitprim-config/${ENTRYPOINT_SCRIPT}
