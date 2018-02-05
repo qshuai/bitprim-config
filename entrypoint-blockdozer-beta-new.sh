@@ -149,7 +149,7 @@ EOF
 fi #IF STANDALONE
 
 echo "Copying UI files"
-tar xpvzf /root/bitprim-config/blockdozer/insight-ui-${COIN}.tar.gz -C /root/.bitcoin/${NODE_NAME}/node_modules
+tar xpvzf /root/bitprim-config/blockdozer/insight-ui-beta-${COIN}.tar.gz -C /root/.bitcoin/${NODE_NAME}/node_modules
 
 
 
