@@ -88,7 +88,7 @@ configure_node()
         fi #[ "${COIN}" == "bcc" ]
     cd /root/.bitcoin/${NODE_NAME}
     if [ "${STANDALONE}" == "true" ] ; then
-    echo "Creting bitcore-node.json for standalone bitcore node"
+    echo "Creating bitcore-node.json for standalone bitcore node"
     REMOTE_BITCOIND="bdz-load-balancer.blockdozer" 
     cat <<EOF >bitcore-node.json
 {
