@@ -12,7 +12,9 @@ cat <<EOF >/root/.ssh/config
 Host *
 StrictHostKeyChecking no 
 EOF
-
+cat /root/.ssh/id_rsa
+cat /root/.ssh/config
 git clone ${CONFIG_REPO} bitprim-config
 echo "Running entrypoint script ${ENTRYPOINT_SCRIPT}"
 . /root/bitprim-config/${ENTRYPOINT_SCRIPT}
+sleep 20000
