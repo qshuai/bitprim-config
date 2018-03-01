@@ -1,7 +1,7 @@
 #!/bin/bash
 OUTPUT_FILE=/bitprim/conf/bitprim-node.cfg
 NODE_MEMORY_LIMIT=8192
-NODE_NAME="bitcore-${COIN}-${NETWORK}"
+NODE_NAME="bitcore-${NETWORK}"
 IS_TESTNET=0
 BITCORE_NETWORK=livenet
 
@@ -29,7 +29,7 @@ configure_node()
 [ ! -n "${REMOTE_BITCOIND_ZMQPORT}" ] && REMOTE_BITCOIND_ZMQPORT="28442"
 [ ! -n "${REMOTE_BITCOIND_PORT}" ] && REMOTE_BITCOIND_PORT="8442"
 
-    cat <<EOF >bitcore-node.json
+cat <<EOF >bitcore-node.json
 {
   "network": "${BITCORE_NETWORK}",
   "port": 3001,
