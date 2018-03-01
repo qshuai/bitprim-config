@@ -68,7 +68,7 @@ configure_node()
 }
 EOF
 fi #IF STANDALONE
-
+}
 
 _term() {
   echo "Caught SIGTERM signal!"
