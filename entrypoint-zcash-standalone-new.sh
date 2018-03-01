@@ -11,29 +11,28 @@ BITCORE_NETWORK=testnet
 fi
 
 
-if [ -d /root/.bitcoin/${NODE_NAME} ] ; then
+if [ -d /root/.zcash/${NODE_NAME} ] ; then
 echo "Cleaning old bitcore node"
-rm -rf /root/.bitcoin/${NODE_NAME}
+rm -rf /root/.zcash/${NODE_NAME}
 fi
 
 
 
 
-configure_domain()
-{
-if [ -n "$DOMAIN_NAME" ] ; then
-echo "Configuring ${DOMAIN_NAME} in links.html"
-sed -i "s/blockdozer.com/$DOMAIN_NAME/g" /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui/public/views/includes/links.html
-fi
-}
+#configure_domain()
+#{
+#if [ -n "$DOMAIN_NAME" ] ; then
+#echo "Configuring ${DOMAIN_NAME} in links.html"
+#sed -i "s/blockdozer.com/$DOMAIN_NAME/g" /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui/public/views/includes/links.html
+#fi
+#}
 
 
 configure_node()
 {
-        echo "Creating Node ${NODE_NAME}"
-        cd /root/.zcash
-        zcash-bitcore-node create ${NODE_NAME} && cd ${NODE_NAME} && zcash-bitcore-node install zcash-insight-api 
-        fi #[ "${COIN}" == "bcc" ]
+    echo "Creating Node ${NODE_NAME}"
+    cd /root/.zcash
+    zcash-bitcore-node create ${NODE_NAME} && cd ${NODE_NAME} && zcash-bitcore-node install zcash-insight-api 
     cd /root/.zcash/${NODE_NAME}
     if [ "${STANDALONE}" == "true" ] ; then
     echo "Creating bitcore-node.json for standalone bitcore node ${REMOTE_BITCOIND_HOST}"
@@ -91,5 +90,4 @@ wait $child
 ### WORK Starts Here
 
 configure_node
-configure_domain
 start_bitcore
