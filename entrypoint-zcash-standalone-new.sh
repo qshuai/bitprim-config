@@ -29,7 +29,7 @@ configure_node()
 [ ! -n "${REMOTE_BITCOIND_ZMQPORT}" ] && REMOTE_BITCOIND_ZMQPORT="28442"
 [ ! -n "${REMOTE_BITCOIND_PORT}" ] && REMOTE_BITCOIND_PORT="8442"
 
-cat <<EOF >bitcore-node.json
+cat <<EOF >zcash-bitcore-node.json
 {
   "network": "${BITCORE_NETWORK}",
   "port": 3001,
