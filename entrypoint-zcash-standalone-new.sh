@@ -17,17 +17,6 @@ rm -rf /root/.zcash/${NODE_NAME}
 fi
 
 
-
-
-#configure_domain()
-#{
-#if [ -n "$DOMAIN_NAME" ] ; then
-#echo "Configuring ${DOMAIN_NAME} in links.html"
-#sed -i "s/blockdozer.com/$DOMAIN_NAME/g" /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui/public/views/includes/links.html
-#fi
-#}
-
-
 configure_node()
 {
     echo "Creating Node ${NODE_NAME}"
@@ -81,7 +70,7 @@ start_bitcore()
 trap _term SIGTERM
 echo "Starting Bitcore"
 cd /root/.zcash/${NODE_NAME}
-node --max-old-space-size=${NODE_MEMORY_LIMIT} /usr/bin/bitcore start & child=$! | tee  
+node --max-old-space-size=${NODE_MEMORY_LIMIT} /usr/bin/zcash-bitcore-node start & child=$! | tee  
 #bitcore start >/dev/console &
 child=$!
 wait $child
