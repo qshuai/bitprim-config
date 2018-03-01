@@ -18,63 +18,6 @@ fi
 
 
 
-configure_bitcoinabc()
-{
-if [ ! -e "/usr/bin/bitcoind" ] ; then
-echo Configuring BitcoinABC
-add-apt-repository ppa:bitcoin-abc/ppa && apt-get update && apt-get -y install bitcoind
-mv /usr/bin/bitcoind /usr/bin/bitcoind.old
-mv /usr/bin/bitcoind.new /usr/bin/bitcoind
-fi
-
-echo "Creating bitcoind config file"
-[ ! -d  /root/.bitcoin/blockchain ] && mkdir /root/.bitcoin/blockchain
-cat <<EOF >/root/.bitcoin/blockchain/bitcoin.conf
-debug=1
-testnet=${IS_TESTNET}
-datadir=/root/.bitcoin/blockchain
-server=1
-whitelist=127.0.0.1
-whitelist=10.42.0.0/16
-# reindex=1
-txindex=1
-addressindex=1
-timestampindex=1
-disablewallet=1
-spentindex=1
-rpcthreads=32
-rcpworkqueue=2048
-dbcache=8192
-maxmempool=600
-checklevel=3
-checkblocks=144
-zmqpubrawtx=tcp://0.0.0.0:28332
-zmqpubhashblock=tcp://0.0.0.0:28332
-#minrelaytxfee=0.00005
-rpcallowip=127.0.0.1
-rpcallowip=10.42.0.0/16
-rpcuser=bitcoin
-rpcpassword=local321
-uacomment=bitcore
-usecashaddr=0
-# testnet=1
-# connect=104.198.194.166
-# uahfstarttime=1500500000
-# uahfstarttime=1500920000
-# uahfstarttime=1501262000
-# connect=104.198.194.166
-EOF
-
-}
-
-configure_domain()
-{
-if [ -n "$DOMAIN_NAME" ] ; then
-echo "Configuring ${DOMAIN_NAME} in links.html"
-sed -i "s/blockdozer.com/$DOMAIN_NAME/g" /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui/public/views/includes/links.html
-fi
-}
-
 
 configure_node()
 {

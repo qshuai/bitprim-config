@@ -22,6 +22,7 @@ zmqpubhashblock=tcp://127.0.0.1:28332
 rpcbind=127.0.0.1
 rpcport=8332
 rpcallowip=127.0.0.1
+rpcallowip=10.42.0.0/16
 rpcuser=bitcoin
 rpcpassword=local321
 uacomment=bitcore
@@ -44,7 +45,7 @@ start_zcash()
 trap _term SIGTERM
 echo "Starting Bitcore"
 cd /root/.bitcoin/${NODE_NAME}
-/usr/bin/zcashd -conf=/root/.zcash/zcash.conf  -datadir=/root/.zcash/blockchain -showmetrics=0 -printtoconsole
+/usr/bin/zcashd -conf=/root/.zcash/zcash.conf  -datadir=/root/.zcash/blockchain -showmetrics=0 -printtoconsole &
 #bitcore start >/dev/console &
 child=$!
 wait $child
