@@ -19,28 +19,35 @@ fi
 
 
 
+configure_domain()
+{
+if [ -n "$DOMAIN_NAME" ] ; then
+echo "Configuring ${DOMAIN_NAME} in links.html"
+sed -i "s/blockdozer.com/$DOMAIN_NAME/g" /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui/public/views/includes/links.html
+fi
+}
+
+
 configure_node()
 {
         echo "Creating Node ${NODE_NAME}"
-        cd /root/.bitcoin
-        bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui
-        BITCOIND_BINARY=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.exec' -r)
-        BITCOIND_DATADIR=/root/.bitcoin/blockchain
-        if [ "${COIN}" == "bcc" ] ; then
-            BITCOIND_BINARY="/usr/bin/bitcoind"
+        cd /root/.zcash
+        zcash-bitcore-node create ${NODE_NAME} && cd ${NODE_NAME} && zcash-bitcore-node install zcash-insight-api 
         fi #[ "${COIN}" == "bcc" ]
-    cd /root/.bitcoin/${NODE_NAME}
+    cd /root/.zcash/${NODE_NAME}
     if [ "${STANDALONE}" == "true" ] ; then
-    echo "Creating bitcore-node.json for standalone bitcore node"
-    REMOTE_BITCOIND="bdz-load-balancer.blockdozer" 
+    echo "Creating bitcore-node.json for standalone bitcore node ${REMOTE_BITCOIND_HOST}"
+[ ! -n "${REMOTE_BITCOIND_HOST}" ] && REMOTE_BITCOIND_HOST="bdz-lb.bdz-test" 
+[ ! -n "${REMOTE_BITCOIND_ZMQPORT}" ] && REMOTE_BITCOIND_ZMQPORT="28442"
+[ ! -n "${REMOTE_BITCOIND_PORT}" ] && REMOTE_BITCOIND_PORT="8442"
+
     cat <<EOF >bitcore-node.json
 {
   "network": "${BITCORE_NETWORK}",
   "port": 3001,
   "services": [
     "bitcoind",
-    "insight-api",
-    "insight-ui",
+    "zcash-insight-api",
     "web"
   ],
   "servicesConfig": {
@@ -48,63 +55,20 @@ configure_node()
       "connect": [{
         "rpcuser": "bitcoin",
         "rpcpassword": "local321",
-        "rpchost": "${REMOTE_BITCOIND}",
-        "zmqpubrawtx" : "tcp://${REMOTE_BITCOIND}:28332",
-        "zmqpubhashblock": "tcp://${REMOTE_BITCOIND}:28332"
+        "rpcport": "${REMOTE_BITCOIND_PORT}",
+        "rpchost": "${REMOTE_BITCOIND_HOST}",
+        "zmqpubrawtx" : "tcp://${REMOTE_BITCOIND_HOST}:${REMOTE_BITCOIND_PORT}",
+        "zmqpubhashblock": "tcp://${REMOTE_BITCOIND_HOST}:${REMOTE_BITCOIND_PORT}"
       }]
     },
-    "insight-api": {
+    "zcash-insight-api": {
       "disableRateLimiter": true,
       "enableCache": true
     }
   }
 }
 EOF
-  else
-    echo "Creating bitcore-node.json for full bitcore node"
-    cat <<EOF >bitcore-node.json
-{
-  "network": "${BITCORE_NETWORK}",
-  "port": 3001,
-  "services": [
-    "bitcoind",
-    "insight-api",
-    "insight-ui",
-    "web"
-  ],
-  "servicesConfig": {
-    "bitcoind": {
-
-      "spawn": {
-        "datadir": "${BITCOIND_DATADIR}",
-        "exec": "${BITCOIND_BINARY}"
-      }
-    },
-    "insight-api": {
-      "disableRateLimiter": true,
-      "enableCache": true
-    }
-  }
-}
-EOF
-
-[ "${COIN}" == "bcc" ] && configure_bitcoinabc
 fi #IF STANDALONE
-
-echo "Copying UI files"
-tar xpvzf /root/bitprim-config/blockdozer/insight-ui-${COIN}.tar.gz -C /root/.bitcoin/${NODE_NAME}/node_modules
-
-
-
-if [ "${COIN}" == "bcc" ] ; then
-echo "Applying patches to bitcore"
-cd /root/bitprim-config/blockdozer/patches && cp -r * /root/.bitcoin/${NODE_NAME}
-cp ../bitcoind /usr/bin/bitcoind
-fi
-
-cd /root/.bitcoin
-
-}
 
 
 _term() {
@@ -117,8 +81,8 @@ start_bitcore()
 {
 trap _term SIGTERM
 echo "Starting Bitcore"
-cd /root/.bitcoin/${NODE_NAME}
-node --max-old-space-size=${NODE_MEMORY_LIMIT} /usr/bin/bitcore start & child=$! | tee 
+cd /root/.zcash/${NODE_NAME}
+node --max-old-space-size=${NODE_MEMORY_LIMIT} /usr/bin/bitcore start & child=$! | tee  
 #bitcore start >/dev/console &
 child=$!
 wait $child
