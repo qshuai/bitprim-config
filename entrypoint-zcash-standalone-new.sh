@@ -21,7 +21,7 @@ configure_node()
 {
     echo "Creating Node ${NODE_NAME}"
     cd /root/.zcash
-    zcash-bitcore-node create ${NODE_NAME} && cd ${NODE_NAME} && zcash-bitcore-node install zcash-insight-api 
+    zcash-bitcore-node create ${NODE_NAME} && cd ${NODE_NAME} && zcash-bitcore-node install https://github.com/BitMEX/zcash-insight-api
     cd /root/.zcash/${NODE_NAME}
     if [ "${STANDALONE}" == "true" ] ; then
     echo "Creating bitcore-node.json for standalone bitcore node ${REMOTE_BITCOIND_HOST}"
