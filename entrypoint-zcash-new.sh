@@ -17,9 +17,9 @@ txindex=1
 addressindex=1
 timestampindex=1
 spentindex=1
-zmqpubrawtx=tcp://127.0.0.1:28332
-zmqpubhashblock=tcp://127.0.0.1:28332
-rpcbind=127.0.0.1
+zmqpubrawtx=tcp://0.0.0.0:28332
+zmqpubhashblock=tcp://0.0.0.0:28332
+#rpcbind=127.0.0.1
 rpcport=8332
 rpcallowip=127.0.0.1
 rpcallowip=10.42.0.0/16
@@ -29,7 +29,7 @@ uacomment=bitcore
 showmetrics=0
 metricsui=0
 EOF
-
+cat /root/.zcash/zcash.conf
 }
 
 
