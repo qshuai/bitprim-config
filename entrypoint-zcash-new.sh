@@ -10,7 +10,7 @@ configure_zcash()
 {
 echo "Creating Zcash config file"
 [ ! -d  /root/.zcash/blockchain ] && mkdir /root/.zcash/blockchain
-cat <<EOF >/root/.zcash/blockchain/zcash.conf
+cat <<EOF >/root/.zcash/zcash.conf
 server=1
 whitelist=127.0.0.1
 txindex=1
