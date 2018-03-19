@@ -45,8 +45,8 @@ cat <<EOF >zcash-bitcore-node.json
         "rpcpassword": "local321",
         "rpcport": "${REMOTE_BITCOIND_PORT}",
         "rpchost": "${REMOTE_BITCOIND_HOST}",
-        "zmqpubrawtx" : "tcp://${REMOTE_BITCOIND_HOST}:${REMOTE_BITCOIND_PORT}",
-        "zmqpubhashblock": "tcp://${REMOTE_BITCOIND_HOST}:${REMOTE_BITCOIND_PORT}"
+        "zmqpubrawtx" : "tcp://${REMOTE_BITCOIND_HOST}:${REMOTE_BITCOIND_ZMQPORT}",
+        "zmqpubhashblock": "tcp://${REMOTE_BITCOIND_HOST}:${REMOTE_BITCOIND_ZMQPORT}"
       }]
     },
     "zcash-insight-api": {
