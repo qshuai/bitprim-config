@@ -22,7 +22,7 @@ configure_node()
     echo "Creating Node ${NODE_NAME}"
     cd /root/.zcash
     zcash-bitcore-node create ${NODE_NAME} 
-    cd ${NODE_NAME} && zcash-bitcore-node install https://github.com/BitMEX/zcash-insight-api && zcash-bitcore-node install https://github.com/BitMEX/zcash-insight-ui && zcash-bitcore-node install https://github.com/BitMEX/zcash-bitcore-lib 
+    cd ${NODE_NAME} && zcash-bitcore-node install https://github.com/BitMEX/zcash-insight-api && zcash-bitcore-node install https://github.com/BitMEX/zcash-insight-ui && npm install https://github.com/BitMEX/zcash-bitcore-lib 
     mv node_modules/zcash-insight-ui/bitcore-node-zcash node_modules/zcash-insight-ui/zcash-bitcore-node
     mv node_modules/zcash-insight-api/node_modules/zcash-bitcore-lib node_modules/zcash-insight-api/node_modules/zcash-bitcore-lib.old
     cp -R node_modules/zcash-bitcore-lib node_modules/zcash-insight-api/node_modules/zcash-bitcore-lib
