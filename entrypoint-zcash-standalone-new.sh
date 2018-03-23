@@ -21,7 +21,11 @@ configure_node()
 {
     echo "Creating Node ${NODE_NAME}"
     cd /root/.zcash
-    zcash-bitcore-node create ${NODE_NAME} && cd ${NODE_NAME} && zcash-bitcore-node install https://github.com/BitMEX/zcash-insight-api
+    zcash-bitcore-node create ${NODE_NAME} 
+    cd ${NODE_NAME} && zcash-bitcore-node install https://github.com/BitMEX/zcash-insight-api && zcash-bitcore-node install https://github.com/BitMEX/zcash-insight-ui && zcash-bitcore-node install https://github.com/BitMEX/zcash-bitcore-lib 
+    mv node_modules/zcash-insight-ui/bitcore-node-zcash node_modules/zcash-insight-ui/zcash-bitcore-node
+    mv node_modules/zcash-insight-api/node_modules/zcash-bitcore-lib node_modules/zcash-insight-api/node_modules/zcash-bitcore-lib.old
+    cp -R node_modules/zcash-bitcore-lib node_modules/zcash-insight-api/node_modules/zcash-bitcore-lib
     cd /root/.zcash/${NODE_NAME}
     if [ "${STANDALONE}" == "true" ] ; then
     echo "Creating bitcore-node.json for standalone bitcore node ${REMOTE_BITCOIND_HOST}"
@@ -36,13 +40,14 @@ cat <<EOF >zcash-bitcore-node.json
   "services": [
     "bitcoind",
     "zcash-insight-api",
+    "zcash-insight-ui",
     "web"
   ],
   "servicesConfig": {
     "bitcoind": {
       "connect": [{
-        "rpcuser": "bitcoin",
-        "rpcpassword": "local321",
+        "rpcuser": "${RPCUSER}",
+        "rpcpassword": "${RPCPASSWORD}",
         "rpcport": "${REMOTE_BITCOIND_PORT}",
         "rpchost": "${REMOTE_BITCOIND_HOST}",
         "zmqpubrawtx" : "tcp://${REMOTE_BITCOIND_HOST}:${REMOTE_BITCOIND_ZMQPORT}",
