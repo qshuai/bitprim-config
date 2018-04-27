@@ -3,7 +3,7 @@
 OUTPUT_FILE=/bitprim/conf/bitprim-restapi.cfg
 #OUTPUT_FILE=./bitprim-node.cfg
 [ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
-
+[ ! -n "$APP_REPO" ] && APP_REPO=https://github.com/bitprim/bitprim.insight
 
 install_packages()
 {
