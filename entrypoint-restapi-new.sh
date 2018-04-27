@@ -9,7 +9,8 @@ install_packages()
 {
 if [ ! -e /tmp/already_installed ] ; then
     apt-get update
-    apt-get -y install $ADDITIONAL_PACKAGES 
+    apt-get -y install python-pip $ADDITIONAL_PACKAGES 
+    pip install conan &&  conan remote add bitprim https://api.bintray.com/conan/bitprim/bitprim
     if [ $? -eq 0 ] ; then
 	echo "$ADDITIONAL_PACKAGES installed" >/tmp/already_installed
     fi
