@@ -9,5 +9,5 @@ rm -rf bitprim-config
 git clone ${CONFIG_REPO} /bitprim/bitprim-config
 git clone ${APP_REPO} /bitprim/bitprim-insight
 echo "Running entrypoint script ${ENTRYPOINT_SCRIPT}"
-. /root/bitprim-config/${ENTRYPOINT_SCRIPT}
+. /bitprim/bitprim-config/${ENTRYPOINT_SCRIPT}
 sleep 20000
