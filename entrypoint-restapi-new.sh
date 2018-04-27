@@ -71,7 +71,7 @@ clean_db_directory()
 if [ -d "${DB_DIR}" ] ; then
   if [ ! -e /tmp/cleaned_db_directory ] ; then
   echo "Cleaning up database directory"
-  rm -rf $DB_DIR/* && rmdir $DB_DIR
+  rm -rf "${DB_DIR:?}"/* && rmdir "$DB_DIR"
   [ $? -eq 0 ] && touch /tmp/cleaned_db_directory
   fi
 fi
@@ -81,7 +81,7 @@ fi
 
 _term() {
   echo "Caught SIGTERM signal!"
-  echo Waiting for $child
+  echo "Waiting for $child"
   kill -TERM "$child" ; wait $child 2>/dev/null
 }
 
@@ -90,15 +90,21 @@ start_bitprim()
 cd /bitprim/bitprim-insight/bitprim.insight
 echo "Starting REST-API Node"
 trap _term SIGTERM
-dotnet run --server.port=$PORT --server.address=0.0.0.0 &
+dotnet run --server.port="$PORT" --server.address=0.0.0.0 &
 child=$!
 wait $child
 }
 
 ### WORK Starts Here
+shopt -s nocasematch
 
 copy_config
+case "$CLEAN_DB_DIRECTORY" in
+yes|y|true|1)
+echo "Cleaning DB Directory before starting node"
+clean_db_directory
+;;
+esac
 [ -n "$CLEAN_DB_DIRECTORY" ] && clean_db_directory
-configure_external_port
 [ -n "$ADDITIONAL_PACKAGES" ] && install_additional_packages
 start_bitprim
