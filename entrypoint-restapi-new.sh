@@ -1,168 +1,83 @@
 #!/bin/bash
-OUTPUT_FILE=/bitprim/conf/bitprim-node.cfg
-NODE_MEMORY_LIMIT=8192
-NODE_NAME="bitcore-${COIN}-${NETWORK}"
-IS_TESTNET=0
-BITCORE_NETWORK=livenet
-
-if [ "$NETWORK" == "testnet" ] ; then
-IS_TESTNET=1
-BITCORE_NETWORK=testnet
-fi
+#HTTP_ADDR=http://172.17.0.1
+OUTPUT_FILE=/bitprim/conf/bitprim-restapi.cfg
+#OUTPUT_FILE=./bitprim-node.cfg
+[ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
 
 
-if [ -d /root/.bitcoin/${NODE_NAME} ] ; then
-echo "Cleaning old bitcore node"
-rm -rf /root/.bitcoin/${NODE_NAME}
-fi
-
-
-
-configure_bitcoinabc()
+install_packages()
 {
-if [ ! -e "/usr/bin/bitcoind" ] ; then
-echo Configuring BitcoinABC
-add-apt-repository ppa:bitcoin-abc/ppa && apt-get update && apt-get -y install bitcoind
-mv /usr/bin/bitcoind /usr/bin/bitcoind.old
-mv /usr/bin/bitcoind.new /usr/bin/bitcoind
-fi
-
-echo "Creating bitcoind config file"
-[ ! -d  /root/.bitcoin/blockchain ] && mkdir /root/.bitcoin/blockchain
-cat <<EOF >/root/.bitcoin/blockchain/bitcoin.conf
-debug=1
-testnet=${IS_TESTNET}
-datadir=/root/.bitcoin/blockchain
-server=1
-whitelist=127.0.0.1
-whitelist=10.42.0.0/16
-# reindex=1
-txindex=1
-addressindex=1
-timestampindex=1
-disablewallet=1
-spentindex=1
-rpcthreads=32
-rcpworkqueue=2048
-dbcache=8192
-maxmempool=600
-checklevel=3
-checkblocks=144
-zmqpubrawtx=tcp://0.0.0.0:28332
-zmqpubhashblock=tcp://0.0.0.0:28332
-#minrelaytxfee=0.00005
-rpcallowip=127.0.0.1
-rpcallowip=10.42.0.0/16
-rpcuser=bitcoin
-rpcpassword=local321
-uacomment=bitcore
-usecashaddr=0
-# testnet=1
-# connect=104.198.194.166
-# uahfstarttime=1500500000
-# uahfstarttime=1500920000
-# uahfstarttime=1501262000
-# connect=104.198.194.166
-EOF
-
-}
-
-configure_domain()
-{
-if [ -n "$DOMAIN_NAME" ] ; then
-echo "Configuring ${DOMAIN_NAME} in links.html"
-sed -i "s/blockdozer.com/$DOMAIN_NAME/g" /root/.bitcoin/${NODE_NAME}/node_modules/insight-ui/public/views/includes/links.html
+if [ ! -e /tmp/already_installed ] ; then
+    apt-get update
+    apt-get -y install git nano $ADDITIONAL_PACKAGES 
+    if [ $? -eq 0 ] ; then
+	echo "$ADDITIONAL_PACKAGES installed" >/tmp/already_installed
+    fi
 fi
 }
 
-
-configure_node()
+copy_config()
 {
-        echo "Creating Node ${NODE_NAME}"
-        cd /root/.bitcoin
-        bitcore create ${NODE_NAME} && cd ${NODE_NAME} && bitcore uninstall address && bitcore uninstall db && bitcore install insight-api && bitcore install insight-ui
-        BITCOIND_BINARY=$(cat bitcore-node.json | jq '.servicesConfig.bitcoind.spawn.exec' -r)
-        BITCOIND_DATADIR=/root/.bitcoin/blockchain
-        if [ "${COIN}" == "bcc" ] ; then
-            BITCOIND_BINARY="/usr/bin/bitcoind"
-        fi #[ "${COIN}" == "bcc" ]
-    cd /root/.bitcoin/${NODE_NAME}
-    if [ "${STANDALONE}" == "true" ] ; then
-    echo "Creating bitcore-node.json for standalone bitcore node"
-    REMOTE_BITCOIND="bdz-load-balancer.blockdozer" 
-    cat <<EOF >bitcore-node.json
-{
-  "network": "${BITCORE_NETWORK}",
-  "port": 3001,
-  "services": [
-    "bitcoind",
-    "insight-api",
-    "insight-ui",
-    "web"
-  ],
-  "servicesConfig": {
-    "bitcoind": {
-      "connect": [{
-        "rpcuser": "bitcoin",
-        "rpcpassword": "local321",
-        "rpchost": "${REMOTE_BITCOIND}",
-        "zmqpubrawtx" : "tcp://${REMOTE_BITCOIND}:28332",
-        "zmqpubhashblock": "tcp://${REMOTE_BITCOIND}:28332"
-      }]
-    },
-    "insight-api": {
-      "disableRateLimiter": true,
-      "enableCache": true
-    }
-  }
-}
-EOF
-  else
-    echo "Creating bitcore-node.json for full bitcore node"
-    cat <<EOF >bitcore-node.json
-{
-  "network": "${BITCORE_NETWORK}",
-  "port": 3001,
-  "services": [
-    "bitcoind",
-    "insight-api",
-    "insight-ui",
-    "web"
-  ],
-  "servicesConfig": {
-    "bitcoind": {
+cd /bitprim 
 
-      "spawn": {
-        "datadir": "${BITCOIND_DATADIR}",
-        "exec": "${BITCOIND_BINARY}"
-      }
-    },
-    "insight-api": {
-      "disableRateLimiter": true,
-      "enableCache": true
-    }
-  }
-}
-EOF
+if [ -n "$CONFIG_FILE" ] ; then
+echo "Copying Bitprim Node Config ${CONFIG_FILE} from repo (CONFIG_FILE variable found)"
+cp bitprim-config/$CONFIG_FILE ${OUTPUT_FILE}
 
-[ "${COIN}" == "bcc" ] && configure_bitcoinabc
-fi #IF STANDALONE
-
-echo "Copying UI files"
-tar xpvzf /root/bitprim-config/blockdozer/insight-ui-beta-${COIN}.tar.gz -C /root/.bitcoin/${NODE_NAME}/node_modules
+else
+[ ! -n "$COIN" ] && COIN=bch
+[ ! -n "$NETWORK" ] && NETWORK=mainnet
+echo "Copying default Bitprim Node config bitprim-restapi-${COIN}-${NETWORK}.cfg from repo"
+cp bitprim-config/bitprim-restapi-${COIN}-${NETWORK}.cfg  ${OUTPUT_FILE}
+fi
+DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $OUTPUT_FILE)
 
 
 
-if [ "${COIN}" == "bcc" ] ; then
-echo "Applying patches to bitcore"
-cd /root/bitprim-config/blockdozer/patches && cp -r * /root/.bitcoin/${NODE_NAME}
-cp ../bitcoind /usr/bin/bitcoind
+if [ -n "$APPCONFIG_FILE" ] ; then
+echo "Copying REST API App  Config ${APPCONFIG_FILE} from repo (CONFIG_FILE variable found)"
+cp bitprim-config/$APPCONFIG_FILE /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+
+else
+
+shopt -s nocasematch
+case "$FULL_NODE" in
+yes|y|true|1)
+echo "Copying default REST API Full Node config bitprim-restapi-${COIN}-${NETWORK}.cfg from repo"
+cp bitprim-config/appsettings-node.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+;;
+
+*)
+echo "Copying default REST API Forwarder Node config bitprim-restapi-${COIN}-${NETWORK}.cfg from repo"
+cp bitprim-config/appsettings-fwd.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+;;
+esac
+
+echo "Configuring FORWARD_URL:$FORWARD_URL in appsettings.json"
+sed -i 's#%FORWARD_URL%#$FORWARD_URL/g' /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+
+
 fi
 
-cd /root/.bitcoin
+
+DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $OUTPUT_FILE)
+
+
 
 }
 
+clean_db_directory()
+{
+if [ -d "${DB_DIR}" ] ; then
+  if [ ! -e /tmp/cleaned_db_directory ] ; then
+  echo "Cleaning up database directory"
+  rm -rf $DB_DIR/* && rmdir $DB_DIR
+  [ $? -eq 0 ] && touch /tmp/cleaned_db_directory
+  fi
+fi
+
+
+}
 
 _term() {
   echo "Caught SIGTERM signal!"
@@ -170,19 +85,20 @@ _term() {
   kill -TERM "$child" ; wait $child 2>/dev/null
 }
 
-start_bitcore()
+start_bitprim()
 {
+cd /bitprim/bitprim-insight/bitprim.insight
+echo "Starting REST-API Node"
 trap _term SIGTERM
-echo "Starting Bitcore"
-cd /root/.bitcoin/${NODE_NAME}
-node --max-old-space-size=${NODE_MEMORY_LIMIT} /usr/bin/bitcore start & child=$! | tee 
-#bitcore start >/dev/console &
+dotnet run --server.port=$PORT --server.address=0.0.0.0 &
 child=$!
 wait $child
 }
 
 ### WORK Starts Here
 
-configure_node
-configure_domain
-start_bitcore
+copy_config
+[ -n "$CLEAN_DB_DIRECTORY" ] && clean_db_directory
+configure_external_port
+[ -n "$ADDITIONAL_PACKAGES" ] && install_additional_packages
+start_bitprim
