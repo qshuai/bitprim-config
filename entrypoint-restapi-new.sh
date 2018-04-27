@@ -9,7 +9,7 @@ install_packages()
 {
 if [ ! -e /tmp/already_installed ] ; then
     apt-get update
-    apt-get -y install git nano $ADDITIONAL_PACKAGES 
+    apt-get -y install $ADDITIONAL_PACKAGES 
     if [ $? -eq 0 ] ; then
 	echo "$ADDITIONAL_PACKAGES installed" >/tmp/already_installed
     fi

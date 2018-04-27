@@ -1,7 +1,7 @@
 #!/bin/bash
 [ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
 [ ! -n "$ENTRYPOINT_SCRIPT" ] && ENTRYPOINT_SCRIPT=entrypoint-restapi-new.sh
-
+apt-get update && apt-get install git
 echo "Cloning Config Repository ${CONFIG_REPO}"
 cd /root
 rm -rf bitprim-config
