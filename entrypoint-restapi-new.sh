@@ -101,7 +101,7 @@ wait $child
 
 ### WORK Starts Here
 shopt -s nocasematch
-
+install_packages
 copy_config
 case "$CLEAN_DB_DIRECTORY" in
 yes|y|true|1)
