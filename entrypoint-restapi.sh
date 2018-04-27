@@ -8,7 +8,7 @@ echo "Cloning Config Repository ${CONFIG_REPO}"
 cd /root
 rm -rf bitprim-config
 git clone ${CONFIG_REPO} bitprim-config
-git clone ${APP_REPO} /bitprim
+git clone ${APP_REPO} /bitprim/bitprim-insight
 echo "Running entrypoint script ${ENTRYPOINT_SCRIPT}"
 . /root/bitprim-config/${ENTRYPOINT_SCRIPT}
 sleep 20000
