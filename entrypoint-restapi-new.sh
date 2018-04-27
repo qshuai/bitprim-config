@@ -45,6 +45,10 @@ case $FULL_NODE in
 yes|y|true|1)
 echo "Copying default REST API Full Node config bitprim-restapi-${COIN}-${NETWORK}.cfg from repo"
 cp bitprim-config/appsettings-node.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+echo "Configuring FORWARD_URL:$FORWARD_URL in appsettings.json"
+sed -i 's#%FORWARD_URL%#$FORWARD_URL/g' /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+
+
 ;;
 
 *)
@@ -53,8 +57,6 @@ cp bitprim-config/appsettings-fwd.json /bitprim/bitprim-insight/bitprim.insight/
 ;;
 esac
 
-echo "Configuring FORWARD_URL:$FORWARD_URL in appsettings.json"
-sed -i 's#%FORWARD_URL%#$FORWARD_URL/g' /bitprim/bitprim-insight/bitprim.insight/appsettings.json
 
 
 fi
