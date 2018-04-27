@@ -1,6 +1,6 @@
 #!/bin/bash
 [ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
-[ ! -n "$APP_REPO" ] && APP_REPO=https://github.com/bitprim/bitprim.insight
+[ ! -n "$APP_REPO" ] && APP_REPO=https://github.com/bitprim/bitprim-insight
 [ ! -n "$ENTRYPOINT_SCRIPT" ] && ENTRYPOINT_SCRIPT=entrypoint-restapi-new.sh
 apt-get update && apt-get install -y git
 mkdir -p /bitprim/{conf,log,database,bin}
