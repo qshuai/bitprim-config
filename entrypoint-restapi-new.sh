@@ -41,7 +41,7 @@ cp bitprim-config/$APPCONFIG_FILE /bitprim/bitprim-insight/bitprim.insight/appse
 else
 
 shopt -s nocasematch
-case "$FULL_NODE" in
+case $FULL_NODE in
 yes|y|true|1)
 echo "Copying default REST API Full Node config bitprim-restapi-${COIN}-${NETWORK}.cfg from repo"
 cp bitprim-config/appsettings-node.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
