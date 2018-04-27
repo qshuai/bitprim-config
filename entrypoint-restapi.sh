@@ -5,9 +5,8 @@
 apt-get update && apt-get install -y git
 mkdir -p /bitprim/{conf,log,database,bin}
 echo "Cloning Config Repository ${CONFIG_REPO}"
-cd /root
 rm -rf bitprim-config
-git clone ${CONFIG_REPO} bitprim-config
+git clone ${CONFIG_REPO} /bitprim/bitprim-config
 git clone ${APP_REPO} /bitprim/bitprim-insight
 echo "Running entrypoint script ${ENTRYPOINT_SCRIPT}"
 . /root/bitprim-config/${ENTRYPOINT_SCRIPT}
