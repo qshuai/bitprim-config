@@ -11,7 +11,7 @@ if [ ! -e /tmp/already_installed ] ; then
     apt-get update
     apt-get -y install python-pip $ADDITIONAL_PACKAGES 
     apt-get -y remove python-pip
-    easy_install pip &&  conan remote add bitprim https://api.bintray.com/conan/bitprim/bitprim
+    easy_install pip && pip install conan &&  conan remote add bitprim https://api.bintray.com/conan/bitprim/bitprim
     if [ $? -eq 0 ] ; then
 	echo "$ADDITIONAL_PACKAGES installed" >/tmp/already_installed
     fi
@@ -95,7 +95,7 @@ start_bitprim()
 cd /bitprim/bitprim-insight/bitprim.insight
 echo "Starting REST-API Node"
 trap _term SIGTERM
-dotnet run --server.port="$PORT" --server.address=0.0.0.0 &
+dotnet run --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
 child=$!
 wait $child
 }
