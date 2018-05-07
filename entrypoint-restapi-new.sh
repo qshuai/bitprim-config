@@ -94,7 +94,7 @@ start_bitprim()
 {
 cd /bitprim/bitprim-insight/bitprim.insight
 echo "Starting REST-API Node"
-trap _term SIGINT
+trap _term SIGTERM
 shopt -s nocasematch
 
 case $COIN in
