@@ -87,14 +87,14 @@ fi
 _term() {
   echo "Caught SIGTERM signal!"
   echo "Waiting for $child"
-  kill -TERM "$child" ; wait $child 2>/dev/null
+  kill -INT "$child" ; wait $child 2>/dev/null
 }
 
 start_bitprim()
 {
 cd /bitprim/bitprim-insight/bitprim.insight
 echo "Starting REST-API Node"
-trap _term SIGTERM
+trap _term SIGINT
 shopt -s nocasematch
 
 case $COIN in
