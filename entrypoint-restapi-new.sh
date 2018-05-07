@@ -36,9 +36,9 @@ DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; 
 
 
 
-if [ -n "$APPCONFIG_FILE" ] ; then
-echo "Copying REST API App  Config ${APPCONFIG_FILE} from repo (CONFIG_FILE variable found)"
-cp bitprim-config/$APPCONFIG_FILE /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+if [ -n "$APP_CONFIG_FILE" ] ; then
+echo "Copying REST API App  Config ${APP_CONFIG_FILE} from repo (CONFIG_FILE variable found)"
+cp bitprim-config/$APP_CONFIG_FILE /bitprim/bitprim-insight/bitprim.insight/appsettings.json
 
 else
 
@@ -95,9 +95,24 @@ start_bitprim()
 cd /bitprim/bitprim-insight/bitprim.insight
 echo "Starting REST-API Node"
 trap _term SIGTERM
+shopt -s nocasematch
+
+case $COIN in
+
+bch)
 dotnet run --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
 child=$!
 wait $child
+;;
+
+btc)
+dotnet run /p:BTC=true --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
+child=$!
+wait $child
+;;
+
+esac
+
 }
 
 ### WORK Starts Here

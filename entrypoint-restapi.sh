@@ -7,6 +7,7 @@ mkdir -p /bitprim/{conf,log,database,bin}
 echo "Cloning Config Repository ${CONFIG_REPO}"
 rm -rf bitprim-config
 git clone ${CONFIG_REPO} /bitprim/bitprim-config
+
 git clone ${APP_REPO} /bitprim/bitprim-insight
 echo "Running entrypoint script ${ENTRYPOINT_SCRIPT}"
 . /bitprim/bitprim-config/${ENTRYPOINT_SCRIPT}
