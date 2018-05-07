@@ -4,7 +4,7 @@
   "BlockchainHeight" : 1260934,
   "DateInputFormat": "yyyy-MM-dd",
   "MaxBlockSummarySize": 500,
-  "NodeConfigFile": "/bitprim/conf/bitprim-restapi.conf",
+  "NodeConfigFile": "/bitprim/conf/bitprim-restapi.cfg",
   "NodeType": "bitprim node",
   "StartDatabaseFromScratch": false,
   "TransactionsByAddressPageSize": 10,
