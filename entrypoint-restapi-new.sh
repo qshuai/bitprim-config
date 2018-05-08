@@ -87,7 +87,7 @@ fi
 _term() {
   echo "Caught SIGTERM signal!"
   echo "Waiting for $child"
-  kill -INT "$child" ; wait $child 2>/dev/null
+  kill -TERM "$child" ; wait $child 2>/dev/null
 }
 
 start_bitprim()
@@ -95,23 +95,12 @@ start_bitprim()
 cd /bitprim/bitprim-insight/bitprim.insight
 echo "Starting REST-API Node"
 trap _term SIGTERM
-shopt -s nocasematch
 
-case $COIN in
 
-bch)
-dotnet run --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
+dotnet build /property:Platform=x64 /p:${COIN^^}=true -c Release -f netcoreapp2.0 -v normal
+dotnet bin/x64/Release/netcoreapp2.0/bitprim.insight.dll --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
 child=$!
 wait $child
-;;
-
-btc)
-dotnet run /p:BTC=true --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
-child=$!
-wait $child
-;;
-
-esac
 
 }
 
