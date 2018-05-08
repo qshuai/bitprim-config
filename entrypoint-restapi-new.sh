@@ -55,7 +55,7 @@ cp bitprim-config/appsettings-node.json /bitprim/bitprim-insight/bitprim.insight
 echo "Copying default REST API Forwarder Node config bitprim-restapi-${COIN}-${NETWORK}.cfg from repo"
 cp bitprim-config/appsettings-fwd.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
 echo "Configuring FORWARD_URL:$FORWARD_URL in appsettings.json"
-sed -i "s#%FORWARD_URL%#${FORWARD_URL}/g" /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+sed -i "s#%FORWARD_URL%#${FORWARD_URL}#g" /bitprim/bitprim-insight/bitprim.insight/appsettings.json
 
 ;;
 esac
