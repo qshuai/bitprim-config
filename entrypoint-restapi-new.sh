@@ -116,5 +116,4 @@ clean_db_directory
 ;;
 esac
 [ -n "$CLEAN_DB_DIRECTORY" ] && clean_db_directory
-[ -n "$ADDITIONAL_PACKAGES" ] && install_additional_packages
 start_bitprim
