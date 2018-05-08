@@ -9,6 +9,21 @@ rm -rf bitprim-config
 git clone ${CONFIG_REPO} /bitprim/bitprim-config
 
 git clone ${APP_REPO} /bitprim/bitprim-insight
+
+_term() {
+  echo "Caught SIGTERM signal!"
+  echo "Waiting for $child"
+  kill -TERM "$child" ; wait $child 2>/dev/null
+}
+
+trap _term SIGTERM
+
+
 echo "Running entrypoint script ${ENTRYPOINT_SCRIPT}"
-. /bitprim/bitprim-config/${ENTRYPOINT_SCRIPT}
-sleep 20000
+/bitprim/bitprim-config/${ENTRYPOINT_SCRIPT} &
+child=$!
+echo "Started entrypoint PID=$child"
+wait $child
+
+
+
