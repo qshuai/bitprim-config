@@ -117,3 +117,4 @@ clean_db_directory
 esac
 [ -n "$CLEAN_DB_DIRECTORY" ] && clean_db_directory
 start_bitprim
+sleep 20000
