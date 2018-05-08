@@ -20,7 +20,7 @@ trap _term SIGTERM
 
 
 echo "Running entrypoint script ${ENTRYPOINT_SCRIPT}"
-/bitprim/bitprim-config/${ENTRYPOINT_SCRIPT} &
+exec /bitprim/bitprim-config/${ENTRYPOINT_SCRIPT} &
 child=$!
 echo "Started entrypoint PID=$child"
 wait $child
