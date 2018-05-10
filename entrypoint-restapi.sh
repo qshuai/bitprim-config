@@ -4,11 +4,27 @@
 [ ! -n "$ENTRYPOINT_SCRIPT" ] && ENTRYPOINT_SCRIPT=entrypoint-restapi-new.sh
 apt-get update && apt-get install -y git
 mkdir -p /bitprim/{conf,log,database,bin}
-echo "Cloning Config Repository ${CONFIG_REPO}"
-rm -rf bitprim-config
-git clone ${CONFIG_REPO} /bitprim/bitprim-config
 
+if [ -d "/bitprim/bitprim-config" ] ; then
+echo "Refreshing $CONFIG_REPO Files on /bitprim/bitprim-config"
+cd /bitprim/bitprim-config && git pull
+else
+echo "Cloning $CONFIG_REPO to /bitrpim/bitprim-config"
+git clone ${CONFIG_REPO} /bitprim/bitprim-config
+fi
+
+
+if [ -d "/bitprim/bitprim-insight" ] ; then
+echo "Refreshing $APP_REPO Files on /bitprim/bitprim-insight"
+cd /bitprim/bitprim-insight && git pull
+else
+echo "Cloning $APP_REPO to /bitrpim/bitprim-insight"
 git clone ${APP_REPO} /bitprim/bitprim-insight
+fi
+
+
+
+
 
 _term() {
   echo "Caught SIGTERM signal!"
