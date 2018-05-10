@@ -2,6 +2,7 @@
 [ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
 [ ! -n "$APP_REPO" ] && APP_REPO=https://github.com/bitprim/bitprim-insight
 [ ! -n "$ENTRYPOINT_SCRIPT" ] && ENTRYPOINT_SCRIPT=entrypoint-restapi-new.sh
+[ ! -n "$BRANCH" ] && BRANCH=master
 apt-get update && apt-get install -y git
 mkdir -p /bitprim/{conf,log,database,bin}
 
@@ -19,7 +20,7 @@ echo "Refreshing $APP_REPO Files on /bitprim/bitprim-insight"
 cd /bitprim/bitprim-insight && git pull
 else
 echo "Cloning $APP_REPO to /bitrpim/bitprim-insight"
-git clone ${APP_REPO} /bitprim/bitprim-insight
+git clone ${APP_REPO} -b ${BRANCH} /bitprim/bitprim-insight
 fi
 
 
