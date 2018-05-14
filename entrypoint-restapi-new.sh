@@ -96,6 +96,7 @@ cd /bitprim/bitprim-insight/bitprim.insight
 echo "Starting REST-API Node"
 trap _term SIGTERM
 
+echo "Cleaning Conan cache"
 conan remove --force '*' 
 dotnet build /property:Platform=x64 /p:${COIN^^}=true -c Release -f netcoreapp2.0 -v normal
 dotnet bin/x64/Release/netcoreapp2.0/bitprim.insight.dll --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
