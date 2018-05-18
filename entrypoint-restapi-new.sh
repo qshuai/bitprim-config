@@ -96,6 +96,11 @@ cd /bitprim/bitprim-insight/bitprim.insight
 echo "Starting REST-API Node"
 trap _term SIGTERM
 
+if [ -e "$DB_DIR/exclusive_lock" ] ; then
+echo "Removing exclusive_lock file"
+rm -f $DB_DIR/exclusive_lock
+fi
+
 echo "Cleaning Conan cache"
 conan remove --force '*' 
 dotnet build /property:Platform=x64 /p:${COIN^^}=true -c Release -f netcoreapp2.0 -v normal
