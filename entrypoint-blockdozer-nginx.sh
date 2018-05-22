@@ -19,7 +19,7 @@ cat<<EOF | envsubst >/etc/nginx/conf.d/default.conf
       listen 80;
       client_max_body_size 16M;
       keepalive_timeout 5;
-      location ~ ^/(blocks|block/.*|status|address/.*|tx/.*|tx/send|block-index/.*|blocks-date/.*|messages/verify|contact_us) {
+      location ~ ^/(blocks|block/.*|status|address/.*|tx/.*|tx/send|block-index/.*|blocks-date/.*|messages/verify|contact_us|api) {
        try_files caca /index.html;
       }
 
