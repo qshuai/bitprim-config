@@ -1,6 +1,5 @@
 #!/bin/bash
 [ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=git@github.com:Bitprim-Infra/blockdozer.git
-[ ! -n "$ENTRYPOINT_SCRIPT" ] && ENTRYPOINT_SCRIPT=scripts/entrypoint-blockdozer-new.sh
 [ ! -n "$BRANCH" ] && BRANCH=master
 
 log()
