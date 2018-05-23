@@ -37,6 +37,7 @@ git clone -b ${BRANCH} ${CONFIG_REPO} /bitprim/blockdozer
 else
 log "Refreshing Repository Data from ${CONFIG_REPO}:${BRANCH}"
 cd /bitprim/blockdozer/
+git checkout ${BRANCH}
 git fetch --all
 git reset --hard origin/${BRANCH}
 fi
