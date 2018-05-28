@@ -103,6 +103,8 @@ fi
 
 echo "Cleaning Conan cache"
 conan remove --force '*' 
+conan remote remove conan-center
+conan remote remove conan-transit
 dotnet build /property:Platform=x64 /p:${COIN^^}=true -c Release -f netcoreapp2.0 -v normal
 dotnet bin/x64/Release/netcoreapp2.0/bitprim.insight.dll --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
 child=$!
