@@ -60,21 +60,21 @@ cd /bitprim
 
 if [ -n "$APP_CONFIG_FILE" ] ; then
 log "Copying REST API App  Config ${APP_CONFIG_FILE} from repo (CONFIG_FILE variable found)"
-cp bitprim-config/$APP_CONFIG_FILE /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+cp -rf bitprim-config/$APP_CONFIG_FILE /bitprim/bitprim-insight/bitprim.insight/appsettings.json
 
 else
 
 shopt -s nocasematch
 case $FULL_NODE in
 yes|y|true|1)
-log "Copying default REST API Full Node config bitprim-restapi-${COIN}-${NETWORK}.cfg from repo"
-cp bitprim-config/appsettings-node.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+log "Copying default REST API Full Node config appsettings-node.json from repo"
+cp -rf bitprim-config/appsettings-node.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
 
 
 ;;
 
 *)
-log "Copying default REST API Forwarder Node config bitprim-restapi-${COIN}-${NETWORK}.cfg from repo"
+log "Copying default REST API Forwarder Node config appsettings-fwd.json from repo"
 cp bitprim-config/appsettings-fwd.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
 log "Configuring FORWARD_URL:$FORWARD_URL in appsettings.json"
 sed -i "s#%FORWARD_URL%#${FORWARD_URL}#g" /bitprim/bitprim-insight/bitprim.insight/appsettings.json
