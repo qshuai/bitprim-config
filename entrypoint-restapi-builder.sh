@@ -9,7 +9,7 @@ echo $(date +"%Y-%m-%d %H:%M:%S") $@
 [ ! -n "$APP_REPO" ] && APP_REPO=https://github.com/bitprim/bitprim-insight
 [ ! -n "$ENTRYPOINT_SCRIPT" ] && ENTRYPOINT_SCRIPT=entrypoint-restapi-new.sh
 [ ! -n "$BRANCH" ] && BRANCH=master
-
+export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
 
 
 
