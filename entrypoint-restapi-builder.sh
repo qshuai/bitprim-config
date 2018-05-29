@@ -17,7 +17,7 @@ clone_repos()
 {
 
 
-if [ -d "/bitprim/bitprim-config" ] ; then
+if [ -d "/bitprim/bitprim-config/.git" ] ; then
 log "Refreshing $CONFIG_REPO Files on /bitprim/bitprim-config"
 cd /bitprim/bitprim-config && git pull
 else
@@ -27,7 +27,7 @@ fi
 
 
 
-if [ -d "/bitprim/bitprim-insight" ] ; then
+if [ -d "/bitprim/bitprim-insight/.git" ] ; then
 log "Refreshing $APP_REPO Files on /bitprim/bitprim-insight"
 cd /bitprim/bitprim-insight && git pull
 else
