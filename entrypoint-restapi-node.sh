@@ -4,7 +4,8 @@ OUTPUT_FILE=/bitprim/conf/bitprim-restapi.cfg
 #OUTPUT_FILE=./bitprim-node.cfg
 [ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
 [ ! -n "$APP_REPO" ] && APP_REPO=https://github.com/bitprim/bitprim-insight
-
+START_COUNT=0
+MAX_STARTS=30
 log()
 {
 echo $(date +"%Y-%m-%d %H:%M:%S") $@
@@ -50,16 +51,8 @@ else
 echo "Copying default Bitprim Node config bitprim-restapi-${COIN}-${NETWORK}.cfg from repo"
 cp bitprim-config/bitprim-restapi-${COIN}-${NETWORK}.cfg  ${OUTPUT_FILE}
 fi
-DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $OUTPUT_FILE)
-
-
-
-fi
-
 
 DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $OUTPUT_FILE)
-
-
 
 }
 
@@ -94,11 +87,16 @@ rm -f $DB_DIR/exclusive_lock
 fi
 
 log "Starting REST-API"
+if [ -e /bitprim/bitprim-insight/bitprim.insight/build_complete ] ; then
 dotnet bin/x64/Release/netcoreapp2.0/bitprim.insight.dll --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
 child=$!
 echo "Started dotnet process PID=$child"
 wait $child
-
+else
+log "build_complete flag not present, sleeping for 10 seconds and retrying "
+sleep 10
+start_bitprim
+fi
 }
 
 ### WORK Starts Here
