@@ -3,9 +3,9 @@
 OUTPUT_FILE=/bitprim/conf/bitprim-restapi.cfg
 #OUTPUT_FILE=./bitprim-node.cfg
 [ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
-[ ! -n "$APP_REPO" ] && APP_REPO=https://github.com/bitprim/bitprim-insight
-START_COUNT=0
-MAX_STARTS=30
+
+
+
 log()
 {
 echo $(date +"%Y-%m-%d %H:%M:%S") $@
