@@ -9,7 +9,7 @@ echo $(date +"%Y-%m-%d %H:%M:%S") $@
 [ ! -n "$APP_REPO" ] && APP_REPO=https://github.com/bitprim/bitprim-insight
 [ ! -n "$ENTRYPOINT_SCRIPT" ] && ENTRYPOINT_SCRIPT=entrypoint-restapi-new.sh
 [ ! -n "$BRANCH" ] && BRANCH=master
-[ ! -n "$CONAN_VERSION" ] && CONAN_VERSION=3.3.0
+[ ! -n "$CONAN_VERSION" ] && CONAN_VERSION=1.3.3
 export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
 
 
