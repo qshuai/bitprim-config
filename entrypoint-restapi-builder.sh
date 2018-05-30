@@ -42,7 +42,7 @@ if [ ! -e /tmp/already_installed ] ; then
     apt-get update
     apt-get -y install cmake build-essential python-pip git $ADDITIONAL_PACKAGES
     apt-get -y remove python-pip
-    easy_install pip && pip install conan &&  conan remote add bitprim https://api.bintray.com/conan/bitprim/bitprim
+    easy_install pip && pip install conan==${CONAN_VERSION} &&  conan remote add bitprim https://api.bintray.com/conan/bitprim/bitprim
     if [ $? -eq 0 ] ; then
         echo "$ADDITIONAL_PACKAGES installed" >/tmp/already_installed
     fi
