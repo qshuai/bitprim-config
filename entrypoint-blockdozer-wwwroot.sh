@@ -56,7 +56,20 @@ fi
 
 cd /bitprim/blockdozer/insight-ui
 
+if [ "$BRANCH" != "master" ] ; then
+log "Creating config.json"
+
+cat <<EOF >config.json
+{
+    "backendUrl": "/api",
+    "wsPort": ""
+}
+EOF
+fi
+
+
 log "Running grunt compile"
+
 ./node_modules/.bin/grunt compile
 
 if [ -n "$DOMAIN" ] ; then
