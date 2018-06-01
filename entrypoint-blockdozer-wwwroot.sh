@@ -49,7 +49,7 @@ cd /bitprim/blockdozer/insight-ui
 if [ ! -x "./node_modules/.bin/grunt" ] ;then
 
 log "Installing grunt on /bitprim/blockdozer/insight-ui" 
-npm install "grunt" "grunt-cli" "grunt-css" "grunt-markdown" "grunt-macreload" "grunt-angular-gettext"  "grunt-contrib-uglify" "grunt-contrib-concat" "grunt-contrib-watch" 
+npm install "grunt" "grunt-cli" "grunt-css" "grunt-markdown" "grunt-macreload" "grunt-angular-gettext"  "grunt-contrib-uglify" "grunt-contrib-concat" "grunt-contrib-watch" "grunt-replace"
 fi
 
 
