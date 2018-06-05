@@ -111,6 +111,5 @@ clean_db_directory
 ;;
 esac
 [ "$CLEAN_DB_DIRECTORY" == "true" ] && clean_db_directory
-echo "core-%h-%p-%t" >/proc/sys/kernel/core_pattern
 start_bitprim
 sleep 120
