@@ -56,7 +56,6 @@ fi
 
 cd /bitprim/blockdozer/insight-ui
 
-if [ "$BRANCH" != "master" ] ; then
 log "Creating config.json"
 
 cat <<EOF >config.json
@@ -65,7 +64,6 @@ cat <<EOF >config.json
     "wsPort": ""
 }
 EOF
-fi
 
 
 log "Running grunt compile"
