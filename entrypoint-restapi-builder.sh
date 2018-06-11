@@ -10,7 +10,6 @@ echo $(date +"%Y-%m-%d %H:%M:%S") $@
 [ ! -n "$ENTRYPOINT_SCRIPT" ] && ENTRYPOINT_SCRIPT=entrypoint-restapi-new.sh
 [ ! -n "$BRANCH" ] && BRANCH=master
 [ ! -n "$CONAN_VERSION" ] && CONAN_VERSION=1.3.3
-[ ! -n "$API_VERSION" ] && API_VERSION=1.0.0
 
 export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
 
