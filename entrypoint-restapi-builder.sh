@@ -38,8 +38,9 @@ git reset --hard origin/${BRANCH}
 else
 log "Cloning $APP_REPO to /bitrpim/bitprim-insight"
 git clone ${APP_REPO} -b ${BRANCH} /bitprim/bitprim-insight
-[ ! -n "$API_VERSION" ] && API_VERSION="${BRANCH}-$(git rev-parse --short HEAD)"
 fi
+[ ! -n "$API_VERSION" ] && API_VERSION="${BRANCH}-$(git rev-parse --short HEAD)"
+log "API_VERSION set to ${API_VERSION}"
 }
 
 install_packages()
