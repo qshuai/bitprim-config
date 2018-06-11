@@ -30,7 +30,10 @@ fi
 
 if [ -d "/bitprim/bitprim-insight/.git" ] ; then
 log "Refreshing $APP_REPO Files on /bitprim/bitprim-insight"
-cd /bitprim/bitprim-insight && git pull
+cd /bitprim/bitprim-insight 
+git checkout ${BRANCH}
+git fetch --all
+git reset --hard origin/${BRANCH}
 else
 log "Cloning $APP_REPO to /bitrpim/bitprim-insight"
 git clone ${APP_REPO} -b ${BRANCH} /bitprim/bitprim-insight
