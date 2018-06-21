@@ -73,7 +73,7 @@ log "Running grunt compile"
 
 if [ -n "$DOMAIN" ] ; then
 log "Configuring ${DOMAIN} in links.html"
-sed -i "s/blockdozer.com/$DOMAIN/g" /bitprim/blockdozer/insight-ui/public/views/includes/links.html
+sed -i "s/blockdozer.com/$DOMAIN/g" /bitprim/blockdozer/insight-ui/public/src/views/includes/links.html
 fi
 
 tail -f /dev/null
