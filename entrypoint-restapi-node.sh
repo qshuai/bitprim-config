@@ -3,7 +3,7 @@
 OUTPUT_FILE=/bitprim/conf/bitprim-restapi.cfg
 #OUTPUT_FILE=./bitprim-node.cfg
 [ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
-
+[ ! -n "DOTNET_VERSION" ] && DOTNET_VERSION=2.0
 
 
 log()
@@ -88,7 +88,7 @@ fi
 
 log "Starting REST-API"
 if [ -e /bitprim/bitprim-insight/bitprim.insight/build_complete ] ; then
-dotnet bin/x64/Release/netcoreapp2.0/bitprim.insight.dll --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
+dotnet bin/x64/Release/netcoreapp${DOTNET_VERSION}/bitprim.insight.dll --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
 child=$!
 echo "Started dotnet process PID=$child"
 wait $child
