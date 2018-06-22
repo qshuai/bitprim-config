@@ -57,24 +57,11 @@ fi
 
 cd /bitprim/blockdozer/insight-ui
 
-log "Creating config.json"
 
-cat <<EOF >config.json
-{
-    "backendUrl": "/api",
-    "wsPort": ""
-}
-EOF
-
-
-log "Running grunt compile"
+log "Running grunt compile with Parameters: WS_PORT=${WS_PORT} DOMAIN_NAME=${DOMAIN_NAME} BACKEND_URL=${BACKEND_URL}"
 
 ./node_modules/.bin/grunt compile
 
-if [ -n "$DOMAIN" ] ; then
-log "Configuring ${DOMAIN} in links.html"
-sed -i "s/blockdozer.com/$DOMAIN/g" /bitprim/blockdozer/insight-ui/public/src/views/includes/links.html
-fi
 
 tail -f /dev/null
 
