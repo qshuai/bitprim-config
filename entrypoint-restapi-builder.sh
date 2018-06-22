@@ -10,6 +10,7 @@ echo $(date +"%Y-%m-%d %H:%M:%S") $@
 [ ! -n "$ENTRYPOINT_SCRIPT" ] && ENTRYPOINT_SCRIPT=entrypoint-restapi-new.sh
 [ ! -n "$BRANCH" ] && BRANCH=master
 [ ! -n "$CONAN_VERSION" ] && CONAN_VERSION=1.3.3
+[ ! -n "$DOTNET_VERSION" ] && DOTNET_VERSION=2.0
 
 export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
 
@@ -122,7 +123,7 @@ conan remove --force '*'
 conan remote remove conan-center
 conan remote remove conan-transit
 log "Starting Build"
-rm -f build_complete && dotnet build /property:Platform=x64 /p:${COIN^^}=true -c Release -f netcoreapp2.0 -v normal && touch build_complete && log "Executed build successfully" && tail -f /dev/null &
+rm -f build_complete && dotnet build /property:Platform=x64 /p:${COIN^^}=true -c Release -f netcoreapp${DOTNET_VERSION} -v normal && touch build_complete && log "Executed build successfully" && tail -f /dev/null &
 wait $child
 
 }
