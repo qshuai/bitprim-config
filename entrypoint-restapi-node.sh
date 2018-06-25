@@ -3,7 +3,7 @@
 OUTPUT_FILE=/bitprim/conf/bitprim-restapi.cfg
 #OUTPUT_FILE=./bitprim-node.cfg
 [ ! -n "$CONFIG_REPO" ] && CONFIG_REPO=https://github.com/bitprim/bitprim-config.git
-[ ! -n "DOTNET_VERSION" ] && DOTNET_VERSION=2.0
+[ ! -n "$DOTNET_VERSION" ] && DOTNET_VERSION=2.0
 
 
 log()
