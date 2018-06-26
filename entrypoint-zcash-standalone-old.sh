@@ -21,8 +21,11 @@ configure_node()
 {
     echo "Creating Node ${NODE_NAME}"
     cd /root/.zcash
-    bitcore-node create ${NODE_NAME} 
-    cd ${NODE_NAME} && bitcore-node install https://github.com/zcash-hackworks/insight-api-zcash && zcash-bitcore-node install https://github.com/zcash-hackworks/insight-ui-zcash 
+    zcash-bitcore-node create ${NODE_NAME} 
+    cd ${NODE_NAME} && zcash-bitcore-node install https://github.com/BitMEX/zcash-insight-api && zcash-bitcore-node install https://github.com/BitMEX/zcash-insight-ui && npm install https://github.com/BitMEX/zcash-bitcore-lib 
+    mv node_modules/zcash-insight-ui/bitcore-node-zcash node_modules/zcash-insight-ui/zcash-bitcore-node
+    mv node_modules/zcash-insight-api/node_modules/zcash-bitcore-lib node_modules/zcash-insight-api/node_modules/zcash-bitcore-lib.old
+    cp -R node_modules/zcash-bitcore-lib node_modules/zcash-insight-api/node_modules/zcash-bitcore-lib
     cd /root/.zcash/${NODE_NAME}
     if [ "${STANDALONE}" == "true" ] ; then
     echo "Creating bitcore-node.json for standalone bitcore node ${REMOTE_BITCOIND_HOST}"
@@ -36,8 +39,8 @@ cat <<EOF >zcash-bitcore-node.json
   "port": 3001,
   "services": [
     "bitcoind",
-    "insight-api-zcash",
-    "insight-ui-zcash",
+    "zcash-insight-api",
+    "zcash-insight-ui",
     "web"
   ],
   "servicesConfig": {
@@ -51,7 +54,7 @@ cat <<EOF >zcash-bitcore-node.json
         "zmqpubhashblock": "tcp://${REMOTE_BITCOIND_HOST}:${REMOTE_BITCOIND_ZMQPORT}"
       }]
     },
-    "insight-api-zcash": {
+    "zcash-insight-api": {
       "disableRateLimiter": true,
       "enableCache": true
     }
