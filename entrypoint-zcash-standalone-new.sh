@@ -22,7 +22,7 @@ configure_node()
     echo "Creating Node ${NODE_NAME}"
     cd /root/.zcash
     bitcore-node create ${NODE_NAME} 
-    cd ${NODE_NAME} && bitcore-node install https://github.com/zcash-hackworks/insight-api-zcash && zcash-bitcore-node install https://github.com/zcash-hackworks/insight-ui-zcash 
+    cd ${NODE_NAME} && bitcore-node install https://github.com/zcash-hackworks/insight-api-zcash && bitcore-node install https://github.com/zcash-hackworks/insight-ui-zcash 
     cd /root/.zcash/${NODE_NAME}
     if [ "${STANDALONE}" == "true" ] ; then
     echo "Creating bitcore-node.json for standalone bitcore node ${REMOTE_BITCOIND_HOST}"
@@ -30,7 +30,7 @@ configure_node()
 [ ! -n "${REMOTE_BITCOIND_ZMQPORT}" ] && REMOTE_BITCOIND_ZMQPORT="28442"
 [ ! -n "${REMOTE_BITCOIND_PORT}" ] && REMOTE_BITCOIND_PORT="8442"
 
-cat <<EOF >zcash-bitcore-node.json
+cat <<EOF >bitcore-node.json
 {
   "network": "${BITCORE_NETWORK}",
   "port": 3001,
@@ -72,7 +72,7 @@ start_bitcore()
 trap _term SIGTERM
 echo "Starting Bitcore"
 cd /root/.zcash/${NODE_NAME}
-node --max-old-space-size=${NODE_MEMORY_LIMIT} /usr/bin/zcash-bitcore-node start & child=$! | tee  
+node --max-old-space-size=${NODE_MEMORY_LIMIT} /usr/bin/bitcore-node start & child=$! | tee  
 #bitcore start >/dev/console &
 child=$!
 wait $child
