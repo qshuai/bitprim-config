@@ -57,6 +57,8 @@ fi
 
 cd /bitprim/blockdozer/insight-ui
 
+[ ! -n "$UI_VERSION" ] && UI_VERSION="${BRANCH}-$(git rev-parse --short HEAD)"
+log "UI_VERSION set to ${UI_VERSION}"
 
 log "Running grunt compile with Parameters: WS_PORT=${WS_PORT} DOMAIN_NAME=${DOMAIN_NAME} BACKEND_URL=${BACKEND_URL}"
 
