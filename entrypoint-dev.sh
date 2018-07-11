@@ -6,7 +6,7 @@ OUTPUT_FILE=/bitprim/conf/bitprim-node.cfg
 
 copy_config()
 {
-cp /bitprim/conf/${COIN}-${NETWORK}.cfg /bitprim/conf/bitprim-node.cfg
+cp /bitprim/conf/${COIN}-${NETWORK}.cfg ${OUTPUT_FILE}
 
 }
 
