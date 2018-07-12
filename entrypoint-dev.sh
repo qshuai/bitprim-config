@@ -67,11 +67,11 @@ _term() {
 start_bitprim()
 {
 if [ ! -d "${DB_DIR}" ] ; then echo "Initializing database directory"
-/bitprim/bin/bn -c /bitprim/conf/${COIN}-${NETWORK}.cfg -i
+/bitprim/bin/bn -c ${OUTPUT_FILE} -i
 fi
 trap _term SIGTERM
 echo "Starting $(/bitprim/bin/bn --version)"
-/bitprim/bin/bn -c /bitprim/conf/${COIN}-${NETWORK}.cfg &
+/bitprim/bin/bn -c ${OUTPUT_FILE} &
 child=$!
 wait $child
 }
