@@ -6,9 +6,23 @@ OUTPUT_FILE=/bitprim/conf/bitprim-node.cfg
 
 copy_config()
 {
-cp /bitprim/conf/${COIN}-${NETWORK}.cfg ${OUTPUT_FILE}
+cp /bitprim/conf/${COIN,,}-${NETWORK}.cfg ${OUTPUT_FILE}
+DB_DIR=$(sed -nr "/^\[database\]/ { :l /^directory[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $OUTPUT_FILE)
+}
+
+
+clean_db_directory()
+{
+if [ -d "${DB_DIR}" ] ; then
+  if [ ! -e /tmp/cleaned_db_directory ] ; then
+  echo "Cleaning up database directory"
+  rm -rf $DB_DIR/* && rmdir $DB_DIR && touch /tmp/cleaned_db_directory
+  fi
+fi
 
 }
+
+
 
 configure_external_port()
 {
