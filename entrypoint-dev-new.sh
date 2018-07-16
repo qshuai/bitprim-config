@@ -82,7 +82,13 @@ wait $child $monitor_child
 ### WORK Starts Here
 
 copy_config
-[ -n "$CLEAN_DB_DIRECTORY" ] && clean_db_directory
+case "$CLEAN_DB_DIRECTORY" in
+yes|y|true|1)
+echo "Cleaning DB Directory before starting node"
+clean_db_directory
+;;
+esac
+
 configure_external_port
 [ -n "$ADDITIONAL_PACKAGES" ] && install_additional_packages
 start_bitprim
