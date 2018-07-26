@@ -85,12 +85,11 @@ trap _term SIGTERM
 
 if [ -n "$NEW_DIR_STRUCTURE" ] ; then
 i=$((${#HOSTNAME}-1))
-NODE_INDEX="${HOSTNAME:$i:1}"
-NEW_DB_DIR=${DB_DIR}-${NODE_INDEX}
-sed -i "s#${DB_DIR}#${NEW_DB_DIR}#g" $OUTPUT_FILE
-fi
-
-if [ "$NEW_DB_DIR" != "$DB_DIR" ]
+NODE_INDEX="-${HOSTNAME:$i:1}"
+NEW_DB_DIR=${DB_DIR}${NODE_INDEX}
+f=$((${#DB_DIR}-2))
+DBDIR_SUFFIX=${DB_DIR:$f:2}
+if [ "${$DBDIR_SUFFIX" != "$NODE_INDEX" ]
 then
   log "Replacing database directory $DB_DIR with $NEW_DB_DIR in config file $OUTPUT_FILE"
   sed -i "s#${DB_DIR}#${NEW_DB_DIR}#g" $OUTPUT_FILE
@@ -98,7 +97,6 @@ else
   log "Database Directory already set to $NEW_DB_DIR in config file $OUTPUT_FILE"
 fi
 fi
-
 
 
 
