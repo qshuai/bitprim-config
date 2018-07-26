@@ -42,13 +42,13 @@ copy_config()
 cd /bitprim 
 mkdir -p /bitprim/{conf,log,database,bin}
 if [ -n "$CONFIG_FILE" ] ; then
-echo "Copying Bitprim Node Config ${CONFIG_FILE} from repo (CONFIG_FILE variable found)"
+log "Copying Bitprim Node Config ${CONFIG_FILE} from repo (CONFIG_FILE variable found)"
 cp bitprim-config/$CONFIG_FILE ${OUTPUT_FILE}
 
 else
 [ ! -n "$COIN" ] && COIN=bch
 [ ! -n "$NETWORK" ] && NETWORK=mainnet
-echo "Copying default Bitprim Node config bitprim-restapi-${COIN}-${NETWORK}.cfg from repo"
+log "Copying default Bitprim Node config bitprim-restapi-${COIN}-${NETWORK}.cfg from repo"
 cp bitprim-config/bitprim-restapi-${COIN}-${NETWORK}.cfg  ${OUTPUT_FILE}
 fi
 
@@ -78,9 +78,9 @@ _term() {
 start_bitprim()
 {
 ulimit -c 100000
-ulimit -c
+log "Ulimit set to: $(ulimit -c)"
 cd /bitprim/bitprim-insight/bitprim.insight
-echo "Starting REST-API Node"
+log "Starting REST-API Node"
 trap _term SIGTERM
 
 if [ -n "$NEW_DIR_STRUCTURE" ] ; then
@@ -107,7 +107,7 @@ log "Starting REST-API"
 if [ -e /bitprim/bitprim-insight/bitprim.insight/build_complete ] ; then
 dotnet bin/x64/Release/netcoreapp${DOTNET_VERSION}/bitprim.insight.dll --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
 child=$!
-echo "Started dotnet process PID=$child"
+log "Started dotnet process PID=$child"
 wait $child
 else
 log "build_complete flag not present, sleeping for 10 seconds and retrying "
