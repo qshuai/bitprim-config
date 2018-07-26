@@ -93,6 +93,7 @@ if [ "${DBDIR_SUFFIX}" != "${NODE_INDEX}" ]
 then
   log "Replacing database directory $DB_DIR with $NEW_DB_DIR in config file $OUTPUT_FILE"
   sed -i "s#${DB_DIR}#${NEW_DB_DIR}#g" $OUTPUT_FILE
+  DB_DIR=${NEW_DB_DIR}
 else
   log "Database Directory already set to $NEW_DB_DIR in config file $OUTPUT_FILE"
 fi
