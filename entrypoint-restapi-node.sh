@@ -78,6 +78,7 @@ _term() {
 start_bitprim()
 {
 ulimit -c 100000
+ulimit -c
 cd /bitprim/bitprim-insight/bitprim.insight
 echo "Starting REST-API Node"
 trap _term SIGTERM
