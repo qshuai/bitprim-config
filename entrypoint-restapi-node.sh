@@ -77,14 +77,30 @@ _term() {
 
 start_bitprim()
 {
+ulimit -c 100000
 cd /bitprim/bitprim-insight/bitprim.insight
 echo "Starting REST-API Node"
 trap _term SIGTERM
+
+if [ -n "$NEW_DIR_STRUCTURE" ] ; then
+i=$((${#HOSTNAME}-1))
+NODE_INDEX="${HOSTNAME:$i:1}"
+NEW_DB_DIR=${DB_DIR}-${NODE_INDEX}
+
+sed -i "s#${DB_DIR}#${NEW_DB_DIR}#g" $OUTPUT_FILE
+
+fi
+
+
 
 if [ -e "$DB_DIR/exclusive_lock" ] ; then
 echo "Removing exclusive_lock file"
 rm -f $DB_DIR/exclusive_lock
 fi
+
+
+
+
 
 log "Starting REST-API"
 if [ -e /bitprim/bitprim-insight/bitprim.insight/build_complete ] ; then
