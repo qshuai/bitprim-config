@@ -83,15 +83,12 @@ cd /bitprim/bitprim-insight/bitprim.insight
 log "Starting REST-API Node"
 trap _term SIGTERM
 
-
-
-
 if [ -n "$NEW_DIR_STRUCTURE" ] ; then
 i=$((${#HOSTNAME}-1))
-f=$((${#DB_DIR}-2))
-DBDIR_OLD="${DB_DIR:0:$f}"
 NODE_INDEX="${HOSTNAME:$i:1}"
-NEW_DB_DIR=${DBDIR_OLD}-${NODE_INDEX}
+NEW_DB_DIR=${DB_DIR}-${NODE_INDEX}
+sed -i "s#${DB_DIR}#${NEW_DB_DIR}#g" $OUTPUT_FILE
+fi
 
 if [ "$NEW_DB_DIR" != "$DB_DIR" ]
 then
