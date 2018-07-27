@@ -101,7 +101,7 @@ fi
 
 
 
-if [ -e "$DB_DIR/*_lock" ] ; then
+if [ -e "$DB_DIR/exclusive_lock" ] ; then
 echo "Removing exclusive_lock file"
 rm -f $DB_DIR/*_lock
 fi
