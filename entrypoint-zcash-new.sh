@@ -28,6 +28,7 @@ rpcpassword=${RPCPASSWORD}
 uacomment=bitcore
 showmetrics=0
 metricsui=0
+disabledeprecation=1.1.0
 EOF
 cat /root/.zcash/zcash.conf
 }
