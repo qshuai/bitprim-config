@@ -46,7 +46,7 @@ start_zcash()
 trap _term SIGTERM
 echo "Starting Bitcore"
 cd /root/.bitcoin/${NODE_NAME}
-/usr/bin/zcashd -conf=/root/.zcash/zcash.conf  -datadir=/root/.zcash/blockchain -showmetrics=0 -printtoconsole -disabledeprecation=1.0.13 &
+/usr/bin/zcashd -conf=/root/.zcash/zcash.conf  -datadir=/root/.zcash/blockchain -showmetrics=0 -printtoconsole &
 #bitcore start >/dev/console &
 child=$!
 wait $child
