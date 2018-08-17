@@ -48,7 +48,12 @@ install_packages()
 {
 if [ ! -e /tmp/already_installed ] ; then
     apt-get update
-    apt-get -y install cmake build-essential python-pip git $ADDITIONAL_PACKAGES
+    apt-get -y install cmake build-essential python-pip git locales $ADDITIONAL_PACKAGES
+    echo "LC_ALL=en_US.UTF-8" >> /etc/environment
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+    echo "LANG=en_US.UTF-8" > /etc/locale.conf
+    locale-gen en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
     apt-get -y remove python-pip
     easy_install pip && pip install conan==${CONAN_VERSION} cpuid &&  conan remote add bitprim https://api.bintray.com/conan/bitprim/bitprim
     if [ $? -eq 0 ] ; then
