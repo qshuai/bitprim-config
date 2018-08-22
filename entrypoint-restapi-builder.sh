@@ -36,6 +36,7 @@ cd /bitprim/bitprim-insight
 git checkout ${BRANCH}
 git fetch --all
 git reset --hard ${BRANCH}
+git pull
 else
 log "Cloning $APP_REPO to /bitrpim/bitprim-insight"
 git clone ${APP_REPO} -b ${BRANCH} /bitprim/bitprim-insight
