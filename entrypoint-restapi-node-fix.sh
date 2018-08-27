@@ -106,6 +106,9 @@ echo "Removing exclusive_lock file"
 if [ -e "$DB_DIR/flush_lock" ] ; then
   log "Flush_lock was found!, trying restoring DB from snapshot"
   if [ -d "$DB_DIR/../database-snapshot" ] ; then
+    log "Cleaning up database directory $DB_DIR"
+    rm -rf $DB_DIR/*
+    log "Restoring database from database snaphost"
     cp -R --reflink $DB_DIR/../database-snapshot/* $DB_DIR
   else
     log "Running with corrupted database, please restore snapshot manually"
