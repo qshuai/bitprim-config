@@ -113,6 +113,7 @@ if [ -e "$DB_DIR/flush_lock" ] ; then
   else
     log "Running with corrupted database, please restore snapshot manually"
   fi
+fi  
 rm -f $DB_DIR/*_lock
 fi
 
