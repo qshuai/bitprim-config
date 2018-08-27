@@ -103,7 +103,13 @@ fi
 
 if [ -e "$DB_DIR/exclusive_lock" ] ; then
 echo "Removing exclusive_lock file"
-[ -e "$DB_DIR/flush_lock" ] && log "Flush_lock was found!"
+if [ -e "$DB_DIR/flush_lock" ] ; then
+  log "Flush_lock was found!, trying restoring DB from snapshot"
+  if [ -d "$DB_DIR/../database-snapshot" ] ; then
+    cp -R --reflink $DB_DIR/../database-snapshot/* $DB_DIR
+  else
+    log "Running with corrupted database, please restore snapshot manually"
+  fi
 rm -f $DB_DIR/*_lock
 fi
 
