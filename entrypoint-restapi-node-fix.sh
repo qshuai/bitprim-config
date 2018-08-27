@@ -103,6 +103,7 @@ fi
 
 if [ -e "$DB_DIR/exclusive_lock" ] ; then
 echo "Removing exclusive_lock file"
+[ -e "$DB_DIR/flush_lock" ] && log "Flush_lock was found!"
 rm -f $DB_DIR/*_lock
 fi
 
