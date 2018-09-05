@@ -33,8 +33,8 @@ fi
 if [ -d "/bitprim/bitprim-insight/.git" ] ; then
 log "Refreshing $APP_REPO Files on /bitprim/bitprim-insight"
 cd /bitprim/bitprim-insight 
-git checkout ${BRANCH}
 git fetch --all
+git checkout ${BRANCH}
 git reset --hard ${BRANCH}
 git pull
 else
