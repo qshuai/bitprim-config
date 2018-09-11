@@ -40,6 +40,7 @@ cd /bitprim/blockdozer/
 git checkout ${BRANCH}
 git fetch --all
 git reset --hard origin/${BRANCH}
+git pull
 fi
 
 
