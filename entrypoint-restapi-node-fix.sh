@@ -123,7 +123,7 @@ fi
 
 log "Starting REST-API"
 if [ -e /bitprim/bitprim-insight/bitprim.insight/build_complete ] ; then
-dotnet bin/x64/Release/netcoreapp${DOTNET_VERSION}/bitprim.insight.dll --server.port="$SERVER_PORT" --server.address=0.0.0.0 &
+dotnet bin/x64/Release/netcoreapp${DOTNET_VERSION}/bitprim.insight.dll --server.port="$SERVER_PORT" --server.address=0.0.0.0 --max.url=8192 &
 child=$!
 log "Started dotnet process PID=$child"
 wait $child
