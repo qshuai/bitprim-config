@@ -21,7 +21,7 @@ EOF
 
 
 log "Installing MongoDB-CLient"
-apt-get update && apt-get install -y mongodb-clients
+apt-get update && apt-get install -y mongodb-clients netcat
 
 
 if [ ! -d "/bitprim/bws/.git" ] ; then
@@ -44,5 +44,5 @@ cd /bitprim/bws
 log "Installing node depencies /bitprim/bws" 
 npm install  
 mv config/default.example.json config/default.json
-tail -f /dev/null
+nc -l 9999
 
