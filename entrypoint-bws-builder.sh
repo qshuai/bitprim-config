@@ -44,5 +44,5 @@ cd /bitprim/bws
 log "Installing node depencies /bitprim/bws" 
 npm install  
 mv config/default.example.json config/default.json
-nc -n -l 9999
+nc -lvp 9999
 
