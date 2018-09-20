@@ -7,6 +7,8 @@ log()
 echo $(date +"%Y-%m-%d %H:%M:%S") $@
 }
 
+log "Removing build_complete flag"
+rm -rf /bitprim/bws/build_complete
 
 log "Setting up SSH KEY for remore repo access"
 cd /root
@@ -42,7 +44,7 @@ cd /bitprim/bws
 
 
 log "Installing node depencies /bitprim/bws" 
-npm install  
+npm install && touch build_complete
 mv config/default.example.json config/default.json
 nc -lvp 9999
 
