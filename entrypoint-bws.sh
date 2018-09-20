@@ -29,7 +29,7 @@ start_bws()
 {
 trap _term SIGTERM
 log "Starting bws"
-cd /bitprim/bws && npm start
+cd /bitprim/bws && npm start && tail -f ${LOG_DIR}/*
 child=$!
 log "BWS Started PID=$child"
 wait $child
