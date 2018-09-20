@@ -46,10 +46,10 @@ cd /bitprim/bws
 log "Installing node depencies /bitprim/bws" 
 npm install && touch build_complete
 mv config/default.example.json config/default.json
-[ -n "${BTC_MAINNET_EXPLORER_URL}" ] && sed -i "s#https://btc.blockdozer.com#${BTC_MAINNET_EXPLORER_URL}#g" config/default.json
-[ -n "${BTC_TESTNET_EXPLORER_URL}" ] && sed -i "s#https://tbtc.blockdozer.com#${BTC_TESTNET_EXPLORER_URL}#g" config/default.json
-[ -n "${BCH_MAINNET_EXPLORER_URL}" ] && sed -i "s#https://blockdozer.com#${BCH_MAINNET_EXPLORER_URL}#g" config/default.json
-[ -n "${BCH_TESTNET_EXPLORER_URL}" ] && sed -i "s#https://tbch.blockdozer.com#${BCH_TESTNET_EXPLORER_URL}#g" config/default.json
+[ -n "${BTC_MAINNET_EXPLORER_URL}" ] && log "Setting MainnetBTC explorer to ${BCH_MAINNET_EXPLORER_URL}"&& sed -i "s#https://btc.blockdozer.com#${BTC_MAINNET_EXPLORER_URL}#g" config/default.json
+[ -n "${BTC_TESTNET_EXPLORER_URL}" ] && log "Setting TestnetBTC explorer to ${BTC_TESTNET_EXPLORER_URL}"&& sed -i "s#https://tbtc.blockdozer.com#${BTC_TESTNET_EXPLORER_URL}#g" config/default.json
+[ -n "${BCH_MAINNET_EXPLORER_URL}" ] && log "Setting MainnetBCH explorer to ${BCH_MAINNNET_EXPLORER_URL}"&& sed -i "s#https://blockdozer.com#${BCH_MAINNET_EXPLORER_URL}#g" config/default.json
+[ -n "${BCH_TESTNET_EXPLORER_URL}" ] && log "Setting TestnetBCH explorer to ${BCH_TESTNET_EXPLORER_URL}" && sed -i "s#https://tbch.blockdozer.com#${BCH_TESTNET_EXPLORER_URL}#g" config/default.json
 
 nc -lvp 9999
 
