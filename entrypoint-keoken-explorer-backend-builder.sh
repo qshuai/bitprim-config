@@ -2,6 +2,20 @@
 [ ! -n "$CONFIG_REPO" ] && APP_REPO=https://github.com/bitprim/keoken-explorer-backend
 [ ! -n "$BRANCH" ] && BRANCH=master
 
+
+log "Setting up SSH KEY for remore repo access"
+cd /root
+mkdir -p /root/.ssh
+echo "${SSH_KEY}" >.ssh/id_rsa
+chmod 600 .ssh/id_rsa
+rm -rf bitprim-config
+cat <<EOF >/root/.ssh/config
+Host *
+StrictHostKeyChecking no
+EOF
+
+
+
 log()
 {
 echo $(date +"%Y-%m-%d %H:%M:%S") $@
