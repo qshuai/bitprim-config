@@ -17,7 +17,6 @@ export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
 clone_repos()
 {
 
-
 if [ -d "/bitprim/bitprim-config/.git" ] ; then
 log "Refreshing $CONFIG_REPO Files on /bitprim/bitprim-config"
 cd /bitprim/bitprim-config && git pull
@@ -25,7 +24,7 @@ else
 log "Cloning $CONFIG_REPO to /bitrpim/bitprim-config"
 git clone ${CONFIG_REPO} /bitprim/bitprim-config
 fi
-
+}
 
 install_packages()
 {
