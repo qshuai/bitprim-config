@@ -1,5 +1,5 @@
 #!/bin/bash
-[ ! -n "$CONFIG_REPO" ] && APP_REPO=https://github.com/bitprim/keoken-explorer-backend
+[ ! -n "$APP__REPO" ] && APP_REPO=https://github.com/bitprim/keoken-explorer-backend
 [ ! -n "$BRANCH" ] && BRANCH=master
 
 
