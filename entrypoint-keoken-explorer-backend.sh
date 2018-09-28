@@ -69,7 +69,7 @@ python3 backend.py
 
 ### WORK Starts Here
 shopt -s nocasematch
-install_pacakges
+install_packages
 clone_repos
 start_keoken_backend
 sleep 300
