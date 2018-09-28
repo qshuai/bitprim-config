@@ -3,6 +3,13 @@
 [ ! -n "$BRANCH" ] && BRANCH=master
 
 
+log()
+{
+echo $(date +"%Y-%m-%d %H:%M:%S") $@
+}
+
+
+
 log "Setting up SSH KEY for remore repo access"
 cd /root
 mkdir -p /root/.ssh
