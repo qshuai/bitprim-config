@@ -52,6 +52,5 @@ log "Building wwwroot files with node"
 npm install 
 npm run build:prod
 
-
 tail -f /dev/null
 
