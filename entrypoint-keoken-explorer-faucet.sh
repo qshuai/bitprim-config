@@ -43,6 +43,7 @@ _term() {
 }
 
 cd /bitprim/keoken-explorer-faucet
+log "Running configure"
 ./configure.sh
 log "Running npm install"
 npm install
