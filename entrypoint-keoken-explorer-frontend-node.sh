@@ -20,7 +20,7 @@ cat<<EOF | envsubst >/etc/nginx/conf.d/default.conf
       keepalive_timeout 5;
       location / {
         index index.html;
-        try_files $uri /index.html;
+        try_files \$uri /index.html;
       }
     }
 
