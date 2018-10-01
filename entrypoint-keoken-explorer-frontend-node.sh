@@ -9,7 +9,7 @@ echo $(date +"%Y-%m-%d %H:%M:%S") $@
 
 configure_nginx()
 {
-export DOLLAR='$'
+export URI='$uri'
 cat<<EOF | envsubst >/etc/nginx/conf.d/default.conf
 
     server {
@@ -21,7 +21,7 @@ cat<<EOF | envsubst >/etc/nginx/conf.d/default.conf
       keepalive_timeout 5;
       location / {
         index index.html;
-        try_files ${DOLLAR}uri /index.html;
+        try_files $(echo -n '$URI') /index.html;
       }
     }
 
