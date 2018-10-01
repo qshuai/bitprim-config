@@ -44,7 +44,8 @@ _term() {
 
 cd /bitprim/keoken-explorer-faucet
 ./configure.sh
-
+log "Running npm install"
+npm install
 
 trap _term SIGTERM
 node --max-old-space-size=${NODE_MEMORY_LIMIT} init.js & child=$! | tee
