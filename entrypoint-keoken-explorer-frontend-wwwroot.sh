@@ -30,7 +30,7 @@ log "Installing Node.js version 6"
 nvm install 8
 
 
-if [ ! -d "/bitprim/blockdozer/.git" ] ; then
+if [ ! -d "/bitprim/keoken-explorer-frontend/.git" ] ; then
 
 log "Pulling Repo data from ${CONFIG_REPO}:${BRANCH}"
 git clone -b ${BRANCH} ${CONFIG_REPO} /bitprim/keoken-explorer-frontend
@@ -47,10 +47,10 @@ fi
 cd /bitprim/keoken-explorer-frontend
 
 
-log "Installing grunt on /bitprim/blockdozer/insight-ui" 
+log "Building wwwroot files with node" 
 #npm install "grunt" "grunt-cli" "grunt-css" "grunt-markdown" "grunt-macreload" "grunt-angular-gettext"  "grunt-contrib-uglify" "grunt-contrib-concat" "grunt-contrib-watch" "grunt-replace"
 npm install 
-npm build:prod
+npm run build:prod
 fi
 
 
