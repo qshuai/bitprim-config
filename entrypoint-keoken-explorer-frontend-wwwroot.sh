@@ -51,7 +51,6 @@ log "Building wwwroot files with node"
 #npm install "grunt" "grunt-cli" "grunt-css" "grunt-markdown" "grunt-macreload" "grunt-angular-gettext"  "grunt-contrib-uglify" "grunt-contrib-concat" "grunt-contrib-watch" "grunt-replace"
 npm install 
 npm run build:prod
-fi
 
 
 tail -f /dev/null
