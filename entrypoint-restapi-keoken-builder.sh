@@ -32,13 +32,25 @@ for repo in core consensus database network node
 do
 log "Cloning bitprim-${repo}"
 rm -rf bitprim-${repo} && git clone -b dev https://github.com/bitprim/bitprim-${repo}
+cd bitprim-${repo}
+git submodule init && git submodule update
+cd /bitprim
 done
 log "Cloning bitprim-blockchain from 'feature_utxo' branch"
 rm -rf bitprim-blockchain && git clone -b feature_utxo https://github.com/bitprim/bitprim-blockchain
+cd bitprim-blockchain
+git submodule init && git submodule update
+cd /bitprim
+
 log "Cloning node-cint from 'feature-BIT-240' branch"
 rm -rf bitprim-node-cint && git clone -b feature-BIT-240 https://github.com/bitprim/bitprim-node-cint
+cd bitprim-node-cint
+git submodule init && git submodule update
+cd /bitprim
+
 log "Cloning bitprim-cs from 'feature-CS-109' branch"
 rm -rf bitprim-cs && git clone -b feature-CS-109 https://github.com/bitprim/bitprim-cs.git
+
 log "Cloning bitprim-insight from 'feature-RA-231' branch"
 rm -rf bitprim-insight && git clone -b feature/RA-231 https://github.com/bitprim/bitprim-insight.git
 cd bitprim-insight
