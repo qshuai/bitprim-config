@@ -52,7 +52,7 @@ log "Cloning bitprim-cs from 'feature-CS-109' branch"
 rm -rf bitprim-cs && git clone -b feature-CS-109 https://github.com/bitprim/bitprim-cs.git
 
 log "Cloning bitprim-insight from 'feature-RA-231' branch"
-rm -rf bitprim-insight && git clone -b feature/RA-231 https://github.com/bitprim/bitprim-insight.git
+rm -rf bitprim-insight/* && git clone -b feature/RA-231 https://github.com/bitprim/bitprim-insight.git
 cd bitprim-insight
 [ ! -n "$API_VERSION" ] && API_VERSION="${BRANCH}-$(git rev-parse --short HEAD)"
 log "API_VERSION set to ${API_VERSION}"
@@ -74,7 +74,7 @@ cd bitprim-node-cint && conan create . bitprim-node-cint/0.14.0@bitprim/testing 
 cd /bitprim
 
 log "Building bitprim-cs"
-cd bitprim-cs/bitprim-BCH && dotnet build -c Release -v normal
+cd bitprim-cs/bitprim-bch && dotnet build -c Release -v normal
 cd /bitprim
 
 }
