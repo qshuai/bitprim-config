@@ -155,7 +155,7 @@ log "Cleaning Conan cache"
 conan remove --force '*'
 log "Starting Build"
 #rm -f build_complete && dotnet build /property:Platform=x64 /p:${COIN^^}=true -c Release -f netcoreapp${DOTNET_VERSION} -v normal && touch build_complete && log "Executed build successfully" && tail -f /dev/null &
-rm -f build_complete && dotnet build -v normal && touch build_complete && log "Executed build successfully" && tail -f /dev/null & child=$!
+rm -f build_complete && dotnet build -v normal -c Release && touch build_complete && log "Executed build successfully" && tail -f /dev/null & child=$!
 wait $child
 
 }
