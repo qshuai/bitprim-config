@@ -41,6 +41,7 @@ log "Cloning bitprim-cs from 'feature-CS-109' branch"
 rm -rf bitprim-cs && git clone -b feature-CS-109 https://github.com/bitprim/bitprim-cs.git
 log "Cloning bitprim-insight from 'feature-RA-231' branch"
 rm -rf bitprim-insight && git clone -b feature/RA-231 https://github.com/bitprim/bitprim-insight.git
+cd bitprim-insight
 [ ! -n "$API_VERSION" ] && API_VERSION="${BRANCH}-$(git rev-parse --short HEAD)"
 log "API_VERSION set to ${API_VERSION}"
 }
@@ -52,19 +53,16 @@ cd /bitprim
 for repo in core database consensus network blockchain node
 do
 log "Building ${repo}"
-cd bitprim-${repo}
-conan create . bitprim-${repo}/0.14.0@bitprim/testing -o *:currency=BCH -o *:keoken=True
-cd ..
+cd bitprim-${repo} && conan create . bitprim-${repo}/0.14.0@bitprim/testing -o *:currency=BCH -o *:keoken=True
+cd /bitprim
 done
 
 log "Building node-cint"
-cd bitprim-node-cint
-conan create . bitprim-node/0.14.0@bitprim/testing -o *:currency=BCH -o *:keoken=True - o shared=True
-cd ..
+cd bitprim-node-cint && conan create . bitprim-node/0.14.0@bitprim/testing -o *:currency=BCH -o *:keoken=True - o shared=True
+cd /bitprim
 
 log "Building bitprim-cs"
-cd bitprim-cs/bitprim-BCH
-dotnet build -v normal
+cd bitprim-cs/bitprim-BCH && dotnet build -c Release -v normal
 cd /bitprim
 
 }
@@ -98,7 +96,7 @@ cd /bitprim
 
 if [ -n "$APP_CONFIG_FILE" ] ; then
 log "Copying REST API App  Config ${APP_CONFIG_FILE} from repo (CONFIG_FILE variable found)"
-cp -rf bitprim-config/$APP_CONFIG_FILE /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+cp -rf /bitprim/bitprim-config/$APP_CONFIG_FILE /bitprim/bitprim-insight/bitprim.insight/appsettings.json
 
 else
 
@@ -106,19 +104,17 @@ shopt -s nocasematch
 case $FULL_NODE in
 yes|y|true|1)
 log "Copying default REST API Full Node config appsettings-node.json from repo"
-cp -rf bitprim-config/appsettings-node.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+cp -rf /bitprim/bitprim-config/appsettings-node.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
 ;;
 
 *)
 log "Copying default REST API Forwarder Node config appsettings-fwd.json from repo"
-cp bitprim-config/appsettings-fwd.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
+cp /bitprim/bitprim-config/appsettings-fwd.json /bitprim/bitprim-insight/bitprim.insight/appsettings.json
 log "Configuring FORWARD_URL:$FORWARD_URL in appsettings.json"
 sed -i "s#%FORWARD_URL%#${FORWARD_URL}#g" /bitprim/bitprim-insight/bitprim.insight/appsettings.json
 
 ;;
 esac
-
-
 
 log "Setting version to ${API_VERSION}"
 sed -i "s#%API_VERSION%#${API_VERSION}#g" /bitprim/bitprim-insight/bitprim.insight/appsettings.json
