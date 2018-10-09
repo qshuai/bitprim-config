@@ -28,7 +28,7 @@ log "Cloning $CONFIG_REPO to /bitrpim/bitprim-config"
 git clone ${CONFIG_REPO} /bitprim/bitprim-config
 fi
 cd /bitprim
-for repo in core consensus datbase network node
+for repo in core consensus database network node
 do
 log "Cloning bitprim-${repo}"
 rm -rf bitprim-${repo} && git clone -b dev https://github.com/bitprim/bitprim-${repo}
