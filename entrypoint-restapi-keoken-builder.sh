@@ -70,7 +70,7 @@ cd /bitprim
 done
 
 log "Building node-cint"
-cd bitprim-node-cint && conan create . bitprim-node/0.14.0@bitprim/testing -o *:currency=BCH -o *:keoken=True - o shared=True
+cd bitprim-node-cint && conan create . bitprim-node-cint/0.14.0@bitprim/testing -o *:currency=BCH -o *:keoken=True -o shared=True
 cd /bitprim
 
 log "Building bitprim-cs"
