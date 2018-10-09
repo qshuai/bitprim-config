@@ -10,6 +10,7 @@ echo $(date +"%Y-%m-%d %H:%M:%S") $@
 clean_bws()
 {
 log "Cleaning up PIDS directory"
+cd /bitprim/bws
 [ ! -n "${PID_DIR}" ] && PID_DIR=pids
 rm -rf ${PID_DIR:?}/*
 
@@ -49,6 +50,7 @@ fi
 mkdir -p ${LOG_DIR} ${PID_DIR}
 
 sleep 5
+
 clean_bws
 start_bws
 sleep 300
