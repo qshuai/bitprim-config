@@ -35,6 +35,7 @@ log "Refreshing Repository Data from ${CONFIG_REPO}:${BRANCH}"
 cd /bitprim/bws/
 git checkout ${BRANCH}
 git fetch --all
+git checkout ${BRANCH}
 git reset --hard origin/${BRANCH}
 git pull
 fi
