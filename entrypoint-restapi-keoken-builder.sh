@@ -19,6 +19,8 @@ export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
 clone_repos()
 {
 
+log "Cleaning Conan cache"
+conan remove --force '*'
 
 if [ -d "/bitprim/bitprim-config/.git" ] ; then
 log "Refreshing $CONFIG_REPO Files on /bitprim/bitprim-config"
@@ -52,7 +54,7 @@ log "Cloning bitprim-cs from 'feature-CS-109' branch"
 rm -rf bitprim-cs && git clone -b feature-CS-109 https://github.com/bitprim/bitprim-cs.git
 
 log "Cloning bitprim-insight from 'feature-RA-231' branch"
-rm -rf bitprim-insight/* && git clone -b feature/RA-231 https://github.com/bitprim/bitprim-insight.git
+find /bitprim/bitprim-insight -mindepth 1 -delete && git clone -b feature/RA-231 https://github.com/bitprim/bitprim-insight.git
 cd bitprim-insight
 [ ! -n "$API_VERSION" ] && API_VERSION="${BRANCH}-$(git rev-parse --short HEAD)"
 log "API_VERSION set to ${API_VERSION}"
@@ -151,8 +153,6 @@ cd /bitprim/bitprim-insight/bitprim.insight
 trap _term SIGTERM
 
 
-log "Cleaning Conan cache"
-conan remove --force '*'
 log "Starting Build"
 #rm -f build_complete && dotnet build /property:Platform=x64 /p:${COIN^^}=true -c Release -f netcoreapp${DOTNET_VERSION} -v normal && touch build_complete && log "Executed build successfully" && tail -f /dev/null &
 rm -f build_complete && dotnet build -v normal -c Release && touch build_complete && log "Executed build successfully" && tail -f /dev/null & child=$!
